@@ -1,0 +1,25 @@
+#container {
+    -fx-spacing: 10;
+}
+
+.labelLittle{
+    -fx-font-size: 11px;
+}
+
+.borderPane .labelTitle {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold
+}
+
+.hbox, .headerbox {
+    -fx-spacing: 10;
+}
+
+.headerbox .label{
+   -fx-font-size: 20px;
+   -fx-font-weight: bold
+}
+
+.numField {
+    -fx-pref-width: 50px;
+}

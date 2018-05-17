@@ -19,18 +19,18 @@ public class LogService {
 	public static void init(String rootLoggerName, Level level) throws IOException {
 		// Turn off global logger
 		Logger global = Logger.getLogger("");
-		global.setLevel(Level.OFF);
-		Arrays.stream(global.getHandlers()).forEach(global::removeHandler);
+//		global.setLevel(Level.OFF);
+//		Arrays.stream(global.getHandlers()).forEach(global::removeHandler);
 
 		// Config root logger
 		Logger rootLogger = Logger.getLogger(rootLoggerName);
-		rootLogger.setUseParentHandlers(false);
+//		rootLogger.setUseParentHandlers(false);
 		rootLogger.setLevel(Level.ALL);
 
 		// Console handler
 		ConsoleHandler consoleHandler = new ConsoleHandler();
 		consoleHandler.setLevel(level);
-		consoleHandler.setFormatter(getSimpleFormatter());
+//		consoleHandler.setFormatter(getSimpleFormatter());
 		rootLogger.addHandler(consoleHandler);
 	}
 

@@ -91,7 +91,24 @@ public class Converter {
 		return toRet;
 	}
 	
-	
+	public static Float stringToFloat(String str) {
+		try {
+			return Float.valueOf(str);
+		} catch(NumberFormatException ex) {
+			return null;
+		}
+	}
+	public static Float[] stringToFloat(String[] source) {
+		Float[] toRet = new Float[source.length];
+		for(int i = 0; i < source.length; i++) {
+			Float num = stringToFloat(source[i]);
+			if(num == null)		return null;
+			toRet[i] = num;
+		}
+		return toRet;
+	}
+
+
 	/* Conversion between objects */
 	public static Path urlToPath(URL url) {
 		try {

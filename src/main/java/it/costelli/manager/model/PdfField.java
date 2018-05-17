@@ -12,11 +12,25 @@ public class PdfField {
 	private SimpleFloatProperty endX;
 	private SimpleFloatProperty endY;
 
+	public PdfField(double x, double y) {
+		this(x, y, 0, 0);
+	}
 	public PdfField(double x, double y, double endX, double endY) {
 		this.x = new SimpleFloatProperty((float)x);
 		this.y = new SimpleFloatProperty((float)y);
 		this.endX = new SimpleFloatProperty((float)endX);
 		this.endY = new SimpleFloatProperty((float)endY);
+	}
+
+	public PdfField clone() {
+		return new PdfField(getX(), getY(), getEndX(), getEndY());
+	}
+
+	public void update(PdfField pdfField) {
+		setX(pdfField.getX());
+		setY(pdfField.getY());
+		setEndX(pdfField.getEndX());
+		setEndY(pdfField.getEndY());
 	}
 
 	public float getX() {
@@ -65,5 +79,27 @@ public class PdfField {
 
 	public void setEndY(float endY) {
 		this.endY.set(endY);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof PdfField)) return false;
+
+		PdfField pdfField = (PdfField) o;
+
+		if (getX() != pdfField.getX()) return false;
+		if (getY() != pdfField.getY()) return false;
+		if (getEndX() != pdfField.getEndX()) return false;
+		return getEndY() == pdfField.getEndY();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) getX();
+		result = 31 * result + (int) getY();
+		result = 31 * result + (int) getEndX();
+		result = 31 * result + (int) getEndY();
+		return result;
 	}
 }

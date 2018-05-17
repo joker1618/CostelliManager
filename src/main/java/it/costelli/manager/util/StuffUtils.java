@@ -1,5 +1,8 @@
 package it.costelli.manager.util;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import static it.costelli.manager.util.StrUtils.strf;
 
 /**
@@ -11,4 +14,14 @@ public class StuffUtils {
 		System.out.println(strf(format, params));
 	}
 
+
+	public static String viewDouble(double num) {
+		return getNumberFormat().format(num);
+	}
+	private static NumberFormat getNumberFormat() {
+		NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		nf.setMinimumFractionDigits(2);
+		nf.setMaximumFractionDigits(2);
+		return nf;
+	}
 }
