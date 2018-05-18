@@ -114,17 +114,6 @@ class TestSheetResizer {
 	}
 
 
-	private static  void updateSpecificRowDims(Pane boxPane, BoxDim boxDim, int nrow, int nelem) {
-		if(nrow == 0 && nelem == 0) {
-			ImageView img = (ImageView) boxPane.getChildren().get(0);
-			img.fitWidthProperty().bind(Bindings.createDoubleBinding(() -> boxPane.getWidth()-1, boxPane.widthProperty()));
-			img.fitHeightProperty().bind(boxPane.heightProperty());
-//			img.fitHeightProperty().bind(Bindings.createDoubleBinding(() -> boxPane.getHeight(), boxPane.heightProperty()));
-//			img.setFitWidth(boxDim.pixelWidth-1);
-//			img.setFitHeight(boxDim.pixelHeight-1);
-		}
-	}
-
 	private static class BoxDim {
 		private int pixelWidth;
 		private int pixelHeight;

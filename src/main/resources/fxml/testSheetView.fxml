@@ -11,7 +11,7 @@
       fx:controller="it.costelli.manager.controller.TestSheetController"
       xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
-    <!-- Row 1 -->
+    <!-- Row 0 -->
     <HBox styleClass="boxRow">
         <VBox styleClass="boxElem,boxImage">
             <ImageView>
@@ -33,21 +33,22 @@
         </VBox>
     </HBox>
 
-    <!-- Row 2 -->
+    <!-- Row 1 -->
     <HBox styleClass="boxRow">
-        <VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>
+        <!--<VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>-->
+        <VBox styleClass="boxElem"><Button text="print pdf" onAction="#actionCreatePDF"/></VBox>
         <VBox styleClass="boxElem"><Label text="ESITO"/></VBox>
         <VBox styleClass="boxElem"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
     </HBox>
 
-    <!-- Row 3 -->
+    <!-- Row 2 -->
     <HBox styleClass="boxRow">
         <VBox styleClass="boxElem"><Label text="VERIFICA CONFORMITA ALLA DISTINTA BASE"/></VBox>
         <BoxEsito styleClass="boxElem" fx:id="fxVerificaConformitaEsito"/>
         <BoxOsservazioni styleClass="boxElem" fx:id="fxVerificaConformitaOsserv"/>
     </HBox>
 
-    <!-- Row 4 -->
+    <!-- Row 3 -->
     <HBox styleClass="boxRow">
         <VBox styleClass="boxElem">
             <Label text="CONTROLLO DIMENSIONALE E DISPOSIZIONE"/>
@@ -56,5 +57,59 @@
         <BoxEsito styleClass="boxElem" fx:id="fxControlloDimensionaleEsito"/>
         <BoxOsservazioni styleClass="boxElem" fx:id="fxControlloDimensionaleOsserv"/>
     </HBox>
+
+    <!-- Row 4 -->
+    <HBox styleClass="boxRow">
+        <BorderPane styleClass="boxElem">
+            <left>
+                <HBox>
+                    <VBox alignment="CENTER"><Label text="GUARNIZIONI"/></VBox>
+                    <CheckBoxCustom fx:id="fxGuarnizioniStandard" labelCheckBox="STANDARD" paddingTRBL="0 0 0 15" />
+                    <CheckBoxCustom fx:id="fxGuarnizioniViton" labelCheckBox="VITON" paddingTRBL="0 0 0 15"/>
+                </HBox>
+            </left>
+            <center>
+                <CheckBoxCustom fx:id="fxGuarnizioniCustom" showTextField="true" paddingTRBL="0 0 0 15"/>
+            </center>
+        </BorderPane>
+
+        <BoxEsito styleClass="boxElem" fx:id="fxGuarnizioniEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxGuarnizioniOsserv"/>
+    </HBox>
+
+    <!-- Row 5 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="POMPE"/>
+            <VBox styleClass="boxSpaced5">
+                <HBox styleClass="boxSpaced10">
+                    <VBox styleClass="boxSpaced5">
+                        <CheckBoxCustom fx:id="fxPompeVariabile" labelCheckBox="VARIABILE" showTextField="true"/>
+                        <CheckBoxCustom fx:id="fxPompeFissa" labelCheckBox="FISSA" showTextField="true"/>
+                    </VBox>
+                    <VBox styleClass="boxSpaced5">
+                        <CheckBoxCustom fx:id="fxPompeIngranaggi" labelCheckBox="INGRANAGGI" showTextField="true"/>
+                        <CheckBoxCustom fx:id="fxPompePalette" labelCheckBox="PALETTE" showTextField="true"/>
+                    </VBox>
+                    <VBox styleClass="boxSpaced5">
+                        <CheckBoxCustom fx:id="fxPompePistoni" labelCheckBox="PISTONI" showTextField="true"/>
+                        <BorderPane>
+                            <left>
+                                <CheckBoxCustom fx:id="fxPompeCustom" showTextField="true"/>
+                            </left>
+                            <center>
+                                <LabelTextField fx:id="fxPompeCustomTypeText" />
+                            </center>
+                        </BorderPane>
+                    </VBox>
+                </HBox>
+                <CheckBoxCustom fx:id="fxPompePortataMin" labelCheckBox="PORTATA I/min" showTextField="true"/>
+            </VBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxPompeEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxPompeOsserv"/>
+    </HBox>
+
+
 
 </VBox>

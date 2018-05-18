@@ -19,6 +19,9 @@
     -fx-spacing: 5;
 }
 
+.boxSpaced5  { -fx-spacing: 5; }
+.boxSpaced10 { -fx-spacing: 10; }
+
 .boxImage {
     -fx-padding: 0;
 }

@@ -11,6 +11,7 @@ import it.costelli.manager.util.FxUtils;
 import it.costelli.manager.util.StrUtils;
 import it.costelli.manager.view.components.BoxEsito;
 import it.costelli.manager.view.components.BoxOsservazioni;
+import it.costelli.manager.view.components.CheckBoxCustom;
 import it.costelli.manager.view.components.LabelTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
@@ -19,9 +20,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -61,11 +65,22 @@ public class TestSheetController implements Initializable {
 	@FXML private BoxEsito fxControlloDimensionaleEsito;
 	@FXML private BoxOsservazioni fxControlloDimensionaleOsserv;
 	// Row 5
-//	@FXML private CheckBoxCustom fxGuarnizioniStandard;
-//	@FXML private CheckBoxCustom fxGuarnizioniViton;
-//	@FXML private CheckBoxCustom fxGuarnizioniCustom;
-//	@FXML private BoxEsito fxGuarnizioniEsito;
-//	@FXML private BoxOsservazioni fxGuarnizioniOsserv;
+	@FXML private CheckBoxCustom fxGuarnizioniStandard;
+	@FXML private CheckBoxCustom fxGuarnizioniViton;
+	@FXML private CheckBoxCustom fxGuarnizioniCustom;
+	@FXML private BoxEsito fxGuarnizioniEsito;
+	@FXML private BoxOsservazioni fxGuarnizioniOsserv;
+	// Row 6
+	@FXML private CheckBoxCustom fxPompeVariabile;
+	@FXML private CheckBoxCustom fxPompeFissa;
+	@FXML private CheckBoxCustom fxPompeIngranaggi;
+	@FXML private CheckBoxCustom fxPompePalette;
+	@FXML private CheckBoxCustom fxPompePistoni;
+	@FXML private CheckBoxCustom fxPompeCustom;
+	@FXML private LabelTextField fxPompeCustomTypeText;
+	@FXML private CheckBoxCustom fxPompePortataMin;
+	@FXML private BoxEsito fxPompeEsito;
+	@FXML private BoxOsservazioni fxPompeOsserv;
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
 
@@ -73,11 +88,19 @@ public class TestSheetController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		TestSheetResizer.resizeBillView(billContainer, 900);
+		manageSpecificResize();
 		manageFieldBindings();
 	}
 
+	private void manageSpecificResize() {
+		// POMPE - row 5
+		Pane row5 = (Pane) fxPompeCustom.getParent();
+		fxPompeCustom.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> row5.getWidth() * 0.4, row5.widthProperty()));
+		((VBox) fxPompeCustom.getLeft()).setPadding(new Insets(0));
+	}
+
 	private void manageFieldBindings() {
-		// Row 1
+		// Row 0
 		addEditableText(FOGLIO_COLLAUDO_NUM, fxFoglioCollaudoNum.getTextField());
 		addEditableText(CLIENTE, fxCliente.getTextField());
 		addEditableText(IMPIANTO_TIPO, fxImpiantoTipo.getTextField());
@@ -86,22 +109,43 @@ public class TestSheetController implements Initializable {
 		addEditableText(MATRICOLA, fxMatricola.getTextField());
 		addEditableText(COD, fxCod.getTextField());
 
-		// Row 3
+		// Row 2
 		addEditableCheckBox(VERIFICA_CONFORMITA_ESITO, fxVerificaConformitaEsito.getCheckBox(), fxVerificaConformitaOsserv.getTextArea());
 		addEditableText(VERIFICA_CONFORMITA_OSSERV, fxVerificaConformitaOsserv.getTextArea());
 
-		// Row 4
+		// Row 3
 		addEditableText(CONTROLLO_DIMENSIONALE_TEXT, fxControlloDimensionaleText.getTextField());
 		addEditableCheckBox(CONTROLLO_DIMENSIONALE_ESITO, fxControlloDimensionaleEsito.getCheckBox(), fxControlloDimensionaleOsserv.getTextArea());
 		addEditableText(CONTROLLO_DIMENSIONALE_OSSERV, fxControlloDimensionaleOsserv.getTextArea());
 
+		// Row 4
+		addEditableCheckBox(GUARNIZIONI_STANDARD, fxGuarnizioniStandard.getCheckBox());
+		addEditableCheckBox(GUARNIZIONI_VITON, fxGuarnizioniViton.getCheckBox());
+		addEditableCheckBox(GUARNIZIONI_CUSTOM, fxGuarnizioniCustom.getCheckBox());
+		addEditableText(GUARNIZIONI_CUSTOM_TEXT, fxGuarnizioniCustom.getTextField());
+		addEditableCheckBox(GUARNIZIONI_ESITO, fxGuarnizioniEsito.getCheckBox(), fxGuarnizioniOsserv.getTextArea());
+		addEditableText(GUARNIZIONI_OSSERV, fxGuarnizioniOsserv.getTextArea());
+
 		// Row 5
-//		addEditableCheckBox(GUARNIZIONI_STANDARD, fxGuarnizioniStandard.getCheckBox());
-//		addEditableCheckBox(GUARNIZIONI_VITON, fxGuarnizioniViton.getCheckBox());
-//		addEditableCheckBox(GUARNIZIONI_CUSTOM, fxGuarnizioniCustom.getCheckBox());
-//		addEditableText(GUARNIZIONI_CUSTOM_TEXT, fxGuarnizioniCustom.getTextField());
-//		addEditableCheckBox(GUARNIZIONI_ESITO, fxGuarnizioniEsito.getCheckBox(), fxGuarnizioniOsserv.getTextArea());
-//		addEditableText(GUARNIZIONI_OSSERV, fxGuarnizioniOsserv.getTextArea());
+		addEditableCheckBox(POMPE_VARIABILE, fxPompeVariabile.getCheckBox());
+		addEditableText(POMPE_VARIABILE_TEXT, fxPompeVariabile.getTextField());
+		addEditableCheckBox(POMPE_FISSA, fxPompeFissa.getCheckBox());
+		addEditableText(POMPE_FISSA_TEXT, fxPompeFissa.getTextField());
+		addEditableCheckBox(POMPE_INGRANAGGI, fxPompeIngranaggi.getCheckBox());
+		addEditableText(POMPE_INGRANAGGI_TEXT, fxPompeIngranaggi.getTextField());
+		addEditableCheckBox(POMPE_PALETTE, fxPompePalette.getCheckBox());
+		addEditableText(POMPE_PALETTE_TEXT, fxPompePalette.getTextField());
+		addEditableCheckBox(POMPE_PISTONI, fxPompePistoni.getCheckBox());
+		addEditableText(POMPE_PISTONI_TEXT, fxPompePistoni.getTextField());
+		addEditableCheckBox(POMPE_CUSTOM, fxPompeCustom.getCheckBox(), fxPompeCustomTypeText.getTextField());
+		addEditableText(POMPE_CUSTOM_TYPE, fxPompeCustom.getTextField());
+		addEditableText(POMPE_CUSTOM_TYPE_TEXT, fxPompeCustomTypeText.getTextField());
+		addEditableCheckBox(POMPE_PORTATA_MIN, fxPompePortataMin.getCheckBox());
+		addEditableText(POMPE_PORTATA_MIN_TEXT, fxPompePortataMin.getTextField());
+		addEditableCheckBox(POMPE_ESITO, fxPompeEsito.getCheckBox(), fxPompeOsserv.getTextArea());
+		addEditableText(POMPE_OSSERV, fxPompeOsserv.getTextArea());
+
+
 
 	}
 	private void addEditableText(FieldType fieldType, TextInputControl textInput) {
@@ -112,11 +156,12 @@ public class TestSheetController implements Initializable {
 	}
 
 	@FXML
-	private void createPDF(ActionEvent event) throws IOException, DocumentException {
-		FileChooser fc = new FileChooser();
-		fc.setTitle("Select output path");
-		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
+	private void actionCreatePDF(ActionEvent event) throws IOException, DocumentException {
+//		FileChooser fc = new FileChooser();
+//		fc.setTitle("Select output path");
+//		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+//		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
+		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
 		if(outFile != null) {
 			Map<FieldType, String> pdfData = new HashMap<>();
 			fieldsMap.forEach((ftype, efield) -> pdfData.put(ftype, efield.toStringField()));
@@ -157,6 +202,11 @@ public class TestSheetController implements Initializable {
 					}
 				}
 			});
+
+			//review to remove
+			String defval = "fede";
+			getNode().setText(defval);
+			getProperty().setValue(defval);
 		}
 
 		@Override
@@ -169,6 +219,8 @@ public class TestSheetController implements Initializable {
 			super(node, new SimpleBooleanProperty(false));
 			getProperty().bind(getNode().selectedProperty());
 			Arrays.asList(disableNodes).forEach(n -> n.disableProperty().bind(Bindings.createBooleanBinding(() -> !getProperty().getValue(), getProperty())));
+			// review to delete
+			getNode().setSelected(true);
 		}
 
 		@Override

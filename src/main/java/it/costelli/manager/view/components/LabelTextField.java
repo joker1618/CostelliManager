@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by f.barbano on 12/05/2018.
@@ -20,10 +21,15 @@ public class LabelTextField extends BorderPane {
 	public LabelTextField() {
 		super();
 
-		setLeft(label);
+		labelField.addListener((obs,old,nez) -> {
+			if(StringUtils.isNotBlank(nez)) {
+				label.setText(nez);
+				setLeft(label);
+			}
+		});
 		setCenter(textField);
 
-		this.label.textProperty().bind(labelField);
+//		this.label.textProperty().bind(labelField);
 		this.label.prefHeightProperty().bind(heightProperty());
 		this.label.setAlignment(Pos.CENTER_LEFT);
 		this.label.setPadding(new Insets(0, 10, 0, 0));
