@@ -19,7 +19,7 @@
             </ImageView>
         </VBox>
         <VBox styleClass="boxElem">
-            <LabelTextField labelField="FOGLIO DI COLLAUDO N." fx:id="fxFoglioCollaudoNum" styleClass="bold"/>
+            <LabelTextField labelField="FOGLIO DI COLLAUDO N." fx:id="fxFoglioCollaudoNum" styleClass="lblBold"/>
             <LabelTextField labelField="CLIENTE" fx:id="fxCliente"/>
             <LabelTextField labelField="IMPIANTO TIPO" fx:id="fxImpiantoTipo"/>
         </VBox>
@@ -36,20 +36,20 @@
     <!-- Row 1 -->
     <HBox styleClass="boxRow">
         <!--<VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>-->
-        <VBox styleClass="boxElem, bold, centered"><Button text="print pdf" onAction="#actionCreatePDF"/></VBox>
-        <VBox styleClass="boxElem, bold, centered"><Label text="ESITO"/></VBox>
-        <VBox styleClass="boxElem, bold, centered"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
+        <VBox styleClass="boxElem, lblBold, centered"><Button text="print pdf" onAction="#actionCreatePDF"/></VBox>
+        <VBox styleClass="boxElem, lblBold, centered"><Label text="ESITO"/></VBox>
+        <VBox styleClass="boxElem, lblBold, centered"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
     </HBox>
 
     <!-- Row 2 -->
     <HBox styleClass="boxRow">
-        <VBox styleClass="boxElem"><Label text="VERIFICA CONFORMITA ALLA DISTINTA BASE" styleClass="bold"/></VBox>
+        <VBox styleClass="boxElem"><Label text="VERIFICA CONFORMITA ALLA DISTINTA BASE" styleClass="lblBold"/></VBox>
         <BoxEsito styleClass="boxElem" fx:id="fxVerificaConformitaEsito"/>
         <BoxOsservazioni styleClass="boxElem" fx:id="fxVerificaConformitaOsserv"/>
     </HBox>
 
     <!-- Row 3 -->
-    <HBox styleClass="boxRow">
+    <HBox styleClass="boxRow,lblFontSize11">
         <VBox styleClass="boxElem">
             <Label text="CONTROLLO DIMENSIONALE E DISPOSIZIONE"/>
             <LabelTextField labelField="DI MONTAGGIO RISPETTO DISEGNO" fx:id="fxControlloDimensionaleText"/>
@@ -63,13 +63,13 @@
         <BorderPane styleClass="boxElem">
             <left>
                 <HBox>
-                    <VBox alignment="CENTER"><Label text="GUARNIZIONI" styleClass="bold"/></VBox>
-                    <CheckBoxCustom fx:id="fxGuarnizioniStandard" labelCheckBox="STANDARD" paddingTRBL="0 0 0 15" />
-                    <CheckBoxCustom fx:id="fxGuarnizioniViton" labelCheckBox="VITON" paddingTRBL="0 0 0 15"/>
+                    <VBox alignment="CENTER"><Label text="GUARNIZIONI" styleClass="lblBold"/></VBox>
+                    <CheckBoxCustom fx:id="fxGuarnizioniStandard" labelCheckBox="STANDARD" paddingTRBL="0 0 0 15" styleClass="lblFontSize11"/>
+                    <CheckBoxCustom fx:id="fxGuarnizioniViton" labelCheckBox="VITON" paddingTRBL="0 0 0 15" styleClass="lblFontSize11"/>
                 </HBox>
             </left>
             <center>
-                <CheckBoxCustom fx:id="fxGuarnizioniCustom" showTextField="true" paddingTRBL="0 0 0 15"/>
+                <CheckBoxCustom fx:id="fxGuarnizioniCustom" showTextField="true" paddingTRBL="0 0 0 15" styleClass="lblFontSize11"/>
             </center>
         </BorderPane>
 
@@ -80,8 +80,8 @@
     <!-- Row 5 -->
     <HBox styleClass="boxRow">
         <VBox styleClass="boxElem">
-            <Label text="POMPE" styleClass="bold"/>
-            <VBox styleClass="boxSpaced5">
+            <Label text="POMPE" styleClass="lblBold"/>
+            <VBox styleClass="boxSpaced5,lblFontSize11">
                 <HBox styleClass="boxSpaced10">
                     <VBox styleClass="boxSpaced5">
                         <CheckBoxCustom fx:id="fxPompeVariabile" labelCheckBox="VARIABILE" showTextField="true"/>
@@ -113,164 +113,191 @@
     <!--Row 6 -->
     <HBox styleClass="boxRow">
         <VBox styleClass="boxElem">
-            <Label text="REGOLATRICI/RIDUTTRICI DI PRESSIONE" styleClass="bold"/>
-            <HBox styleClass="boxSpaced10">
+            <Label text="REGOLATRICI/RIDUTTRICI DI PRESSIONE" styleClass="lblBold"/>
+            <HBox styleClass="boxSpaced10,lblFontSize11">
                 <LabelTextCombo fx:id="fxRegolatriciTaratura" labelField="TARATURA" itemsType="unity"/>
-                <LabelTextCombo fx:id="fxRegolatriciRipetibilta" labelField="RIPETIBILITA" itemsType="time"/>
+                <LabelTextCombo fx:id="fxRegolatriciRipetibilta" labelField="RIPETIBILITA" itemsType="unity"/>
             </HBox>
         </VBox>
         <BoxEsito styleClass="boxElem" fx:id="fxRegolatriciEsito"/>
         <BoxOsservazioni styleClass="boxElem" fx:id="fxRegolatriciOsserv"/>
     </HBox>
 
-    <!--&lt;!&ndash;Row 8 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<VBox styleClass="boxElem">-->
-            <!--<Label text="PROVA DI FUNZIONAMENTO"/>-->
-            <!--<HBox>-->
-                <!--<LabelTextCombo fx:id="fxProvaFunzionamentoPressione" labelField="PRESSIONE"/>-->
-                <!--<LabelTextField fx:id="fxProvaFunzionamentoDurata" labelField="DURATA"/>-->
-            <!--</HBox>-->
-        <!--</VBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxProvaFunzionamentoEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxProvaFunzionamentoOsserv"/>-->
-    <!--</HBox>-->
+    <!--Row 7 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="PROVA DI FUNZIONAMENTO" styleClass="lblBold"/>
+            <HBox styleClass="boxSpaced10,lblFontSize11">
+                <LabelTextCombo fx:id="fxProvaFunzionamentoPressione" labelField="PRESSIONE" itemsType="unity"/>
+                <LabelTextCombo fx:id="fxProvaFunzionamentoDurata" labelField="DURATA" itemsType="time"/>
+            </HBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxProvaFunzionamentoEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxProvaFunzionamentoOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash;Row 9 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<VBox styleClass="boxElem">-->
-            <!--<Label text="PROVA DI SOVRAPRESSIONE"/>-->
-            <!--<HBox>-->
-                <!--<LabelTextCombo fx:id="fxProvaSovrapressionePressione" labelField="PRESSIONE"/>-->
-                <!--<LabelTextField fx:id="fxProvaSovrapressioneDurata" labelField="DURATA"/>-->
-            <!--</HBox>-->
-        <!--</VBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxProvaSovrapressioneEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxProvaSovrapressioneOsserv"/>-->
-    <!--</HBox>-->
+    <!--Row 8 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="PROVA DI SOVRAPRESSIONE" styleClass="lblBold"/>
+            <HBox styleClass="boxSpaced10,lblFontSize11">
+                <LabelTextCombo fx:id="fxProvaSovrapressionePressione" labelField="PRESSIONE" itemsType="unity"/>
+                <LabelTextCombo fx:id="fxProvaSovrapressioneDurata" labelField="DURATA" itemsType="time"/>
+            </HBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxProvaSovrapressioneEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxProvaSovrapressioneOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash; Row 10 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<VBox styleClass="boxElem">-->
-            <!--<Label text="VALVOLE"/>-->
-            <!--<HBox>-->
-                <!--<VBox>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleSequenze" labelCheckBox="SEQUENZE"/>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleStrozzatori" labelCheckBox="STROZZATORI"/>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleTenutaNonRitorno" labelCheckBox="TENUTA NON RITORNO"/>-->
-                <!--</VBox>-->
-                <!--<VBox>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleRiduzPressione" labelCheckBox="RIDUZ. PRESSIONE"/>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleRegolPortataCompens" labelCheckBox="REGOL. PORTATA COMPENS."/>-->
-                    <!--<CheckBoxCustom fx:id="fxValvoleTenutaNonRitornoPil" labelCheckBox="TENUTA NON RITORNO PIL."/>-->
-                <!--</VBox>-->
-            <!--</HBox>-->
-        <!--</VBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxValvoleEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxValvoleOsserv"/>-->
-    <!--</HBox>-->
+    <!-- Row 9 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="VALVOLE" styleClass="lblBold"/>
+            <HBox styleClass="boxSpaced10,lblFontSize11">
+                <VBox styleClass="boxSpaced5">
+                    <CheckBoxCustom fx:id="fxValvoleSequenze" labelCheckBox="SEQUENZE"/>
+                    <CheckBoxCustom fx:id="fxValvoleStrozzatori" labelCheckBox="STROZZATORI"/>
+                    <CheckBoxCustom fx:id="fxValvoleTenutaNonRitorno" labelCheckBox="TENUTA NON RITORNO"/>
+                </VBox>
+                <VBox styleClass="boxSpaced5">
+                    <CheckBoxCustom fx:id="fxValvoleRiduzPressione" labelCheckBox="RIDUZ. PRESSIONE"/>
+                    <CheckBoxCustom fx:id="fxValvoleRegolPortataCompens" labelCheckBox="REGOL. PORTATA COMPENS."/>
+                    <CheckBoxCustom fx:id="fxValvoleTenutaNonRitornoPil" labelCheckBox="TENUTA NON RITORNO PIL."/>
+                </VBox>
+            </HBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxValvoleEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxValvoleOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash; Row 11 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<VBox styleClass="boxElem">-->
-            <!--<Label text="ACCESSORI"/>-->
-            <!--<HBox>-->
-                <!--<LabelTextField fx:id="fxAccessoriAccumulatore" labelField="ACCUMULATORE LT."/>-->
-                <!--<LabelTextField fx:id="fxAccessoriP0Bar" labelField="P0 Bar"/>-->
-                <!--<LabelTextField fx:id="fxAccessoriNorme" labelField="NORME"/>-->
-            <!--</HBox>-->
-            <!--<HBox>-->
-                <!--<VBox>-->
-                    <!--<Label text="FILTRI"/>-->
-                    <!--<Label text="SCAMB. CALORE"/>-->
-                <!--</VBox>-->
-                <!--<VBox>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriAsp" labelCheckBox="ASP. u" showTextField="true"/>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriAria" labelCheckBox="ARIA"/>-->
-                <!--</VBox>-->
-                <!--<VBox>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriMan" labelCheckBox="MAN. u" showTextField="true"/>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriAcqua" labelCheckBox="ACQUA"/>-->
-                <!--</VBox>-->
-                <!--<VBox>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriRit" labelCheckBox="RIT. u" showTextField="true"/>-->
-                    <!--<CheckBoxCustom fx:id="fxAccessoriCustom" showTextField="true"/>-->
-                <!--</VBox>-->
-            <!--</HBox>-->
-        <!--</VBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxAccessoriEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxAccessoriOsserv"/>-->
-    <!--</HBox>-->
+    <!-- Row 10 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="ACCESSORI" styleClass="lblBold"/>
+            <HBox styleClass="boxSpaced10,lblFontSize11">
+                <LabelTextField fx:id="fxAccessoriAccumulatore" labelField="ACCUMULATORE LT."/>
+                <LabelTextField fx:id="fxAccessoriP0Bar" labelField="P0 Bar"/>
+                <LabelTextField fx:id="fxAccessoriNorme" labelField="NORME"/>
+            </HBox>
+            <HBox styleClass="boxSpaced5,lblFontSize11">
+                <VBox styleClass="boxSpaced10" style="-fx-min-width:100px">
+                    <Label text="FILTRI" styleClass="lblUnderline"/>
+                    <Label text="SCAMB. CALORE" styleClass="lblUnderline"/>
+                </VBox>
+                <VBox styleClass="boxSpaced10">
+                    <CheckBoxCustom fx:id="fxAccessoriFiltriAsp" labelCheckBox="ASP. u" showTextField="true"/>
+                    <CheckBoxCustom fx:id="fxAccessoriScambioCaloreAria" labelCheckBox="ARIA"/>
+                </VBox>
+                <VBox styleClass="boxSpaced10">
+                    <CheckBoxCustom fx:id="fxAccessoriFiltriMan" labelCheckBox="MAN. u" showTextField="true"/>
+                    <CheckBoxCustom fx:id="fxAccessoriScambioCaloreAcqua" labelCheckBox="ACQUA"/>
+                </VBox>
+                <VBox styleClass="boxSpaced10">
+                    <CheckBoxCustom fx:id="fxAccessoriFiltriRit" labelCheckBox="RIT. u" showTextField="true"/>
+                    <CheckBoxCustom fx:id="fxAccessoriScambioCaloreCustom" showTextField="true"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxAccessoriEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxAccessoriOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash; Row 12 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<BorderPane styleClass="boxElem">-->
-            <!--<left><Label text="STRUMENTI"/></left>-->
-            <!--<center>-->
-                <!--<VBox>-->
-                    <!--<HBox>-->
-                        <!--<VBox>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiManometro" labelCheckBox="MANOMETRO"/>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiTermometro" labelCheckBox="TERMOMETRO" />-->
-                        <!--</VBox>-->
-                        <!--<VBox>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiPressTrasd" labelCheckBox="PRESS./TRASD."/>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiTermostato" labelCheckBox="TERMOSTATO"/>-->
-                        <!--</VBox>-->
-                        <!--<VBox>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiLivelloStato" labelCheckBox="LIVELLO STATO"/>-->
-                            <!--<CheckBoxCustom fx:id="fxStrumentiCustom" showTextField="true"/>-->
-                        <!--</VBox>-->
-                    <!--</HBox>-->
-                <!--</VBox>-->
-            <!--</center>-->
-        <!--</BorderPane>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxStrumentiEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxStrumentiOsserv"/>-->
-    <!--</HBox>-->
+    <!-- Row 11 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="STRUMENTI" styleClass="lblBold"/>
+            <BorderPane styleClass="lblFontSize11">
+                <left>
+                    <HBox styleClass="boxSpaced10" style="-fx-padding: 0 10 0 0">
+                        <VBox styleClass="boxSpaced10">
+                            <CheckBoxCustom fx:id="fxStrumentiManometro" labelCheckBox="MANOMETRO"/>
+                            <CheckBoxCustom fx:id="fxStrumentiTermometro" labelCheckBox="TERMOMETRO" />
+                        </VBox>
+                        <VBox styleClass="boxSpaced10">
+                            <CheckBoxCustom fx:id="fxStrumentiPressTrasd" labelCheckBox="PRESS./TRASD."/>
+                            <CheckBoxCustom fx:id="fxStrumentiTermostato" labelCheckBox="TERMOSTATO"/>
+                        </VBox>
+                    </HBox>
+                </left>
+                <center>
+                    <VBox styleClass="boxSpaced10">
+                        <CheckBoxCustom fx:id="fxStrumentiLivelloStato" labelCheckBox="LIVELLO STATO"/>
+                        <CheckBoxCustom fx:id="fxStrumentiCustom" showTextField="true"/>
+                    </VBox>
+                </center>
+            </BorderPane>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxStrumentiEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxStrumentiOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash; Row 13 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<HBox styleClass="boxElem">-->
-            <!--<Label text="TENUTE"/>-->
-            <!--<VBox>-->
-                <!--<HBox>-->
-                    <!--<VBox>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteTappi" labelCheckBox="TAPPI"/>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteBlocchi" labelCheckBox="BLOCCHI" />-->
-                    <!--</VBox>-->
-                    <!--<VBox>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteOblo" labelCheckBox="OBLO"/>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteValvole" labelCheckBox="VALVOLE"/>-->
-                    <!--</VBox>-->
-                    <!--<VBox>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteSerbatoio" labelCheckBox="SERBATOIO" showTextField="true"/>-->
-                        <!--<CheckBoxCustom fx:id="fxTenuteRaccordi" labelCheckBox="RACCORDI" showTextField="true"/>-->
-                    <!--</VBox>-->
-                <!--</HBox>-->
-            <!--</VBox>-->
-        <!--</HBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxTenuteEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxTenuteOsserv"/>-->
-    <!--</HBox>-->
+    <!-- Row 12 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="TENUTE" styleClass="lblBold"/>
+            <BorderPane styleClass="lblFontSize11">
+                <left>
+                    <HBox styleClass="boxSpaced10" style="-fx-padding: 0 10 0 0; -fx-alignment: CENTER">
+                        <VBox styleClass="boxSpaced10">
+                            <CheckBoxCustom fx:id="fxTenuteTappi" labelCheckBox="TAPPI"/>
+                            <CheckBoxCustom fx:id="fxTenuteBlocchi" labelCheckBox="BLOCCHI" />
+                        </VBox>
+                        <VBox styleClass="boxSpaced10">
+                            <CheckBoxCustom fx:id="fxTenuteOblo" labelCheckBox="OBLO"/>
+                            <CheckBoxCustom fx:id="fxTenuteValvole" labelCheckBox="VALVOLE"/>
+                        </VBox>
+                    </HBox>
+                </left>
+                <center>
+                    <VBox styleClass="boxSpaced10">
+                        <CheckBoxCustom fx:id="fxTenuteSerbatoio" labelCheckBox="SERBATOIO" showTextField="true"/>
+                        <CheckBoxCustom fx:id="fxTenuteRaccordi" labelCheckBox="RACCORDI" showTextField="true"/>
+                    </VBox>
+                </center>
+            </BorderPane>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxTenuteEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxTenuteOsserv"/>
+    </HBox>
 
-    <!--&lt;!&ndash; Row 14 &ndash;&gt;-->
-    <!--<HBox styleClass="boxRow">-->
-        <!--<HBox styleClass="boxElem">-->
-            <!--<VBox>-->
-                <!--<HBox>-->
-                    <!--<Label text="FLUIDO"/>-->
-                    <!--<CheckBoxCustom fx:id="fxFluidoOlioMinerale" labelCheckBox="OLIO MINERALE"/>-->
-                    <!--<CheckBoxCustom fx:id="fxFluidoCustom" showTextField="true"/>-->
-                <!--</HBox>-->
-                <!--<HBox>-->
-                    <!--<LabelTextField fx:id="fxFluidoTempCollaudo" labelField="TEMP. AMBIENTE DI COLLAUDO °C"/>-->
-                    <!--<LabelTextField fx:id="fxFluidoTempOlio" labelField="TEMP. OLIO °C"/>-->
-                <!--</HBox>-->
-            <!--</VBox>-->
-        <!--</HBox>-->
-        <!--<BoxEsito styleClass="boxElem" fx:id="fxFluidoEsito"/>-->
-        <!--<BoxOsservazioni styleClass="boxElem" fx:id="fxFluidoOsserv"/>-->
-    <!--</HBox>-->
+    <!-- Row 13 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="FLUIDO" styleClass="lblBold"/>
+            <VBox styleClass="boxSpaced10,lblFontSize11">
+                <HBox styleClass="boxSpaced10">
+                    <CheckBoxCustom fx:id="fxFluidoOlioMinerale" labelCheckBox="OLIO MINERALE"/>
+                    <CheckBoxCustom fx:id="fxFluidoCustom" showTextField="true"/>
+                </HBox>
+                <HBox styleClass="boxSpaced10">
+                    <LabelTextField fx:id="fxFluidoTempCollaudo" labelField="TEMP. AMBIENTE DI COLLAUDO °C"/>
+                    <LabelTextField fx:id="fxFluidoTempOlio" labelField="TEMP. OLIO °C"/>
+                </HBox>
+            </VBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxFluidoEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxFluidoOsserv"/>
+    </HBox>
+
+    <!-- Row 14 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="FINITURA GENERALE E VERNICIATURA" styleClass="lblBold"/>
+            <BorderPane styleClass="lblFontSize11">
+                <left>
+                    <!--<HBox styleClass="boxSpaced10">-->
+                    <HBox>
+                        <CheckBoxCustom fx:id="fxFinituraStandard" labelCheckBox="STANDARD"/>
+                        <CheckBoxCustom fx:id="fxFinituraRal" labelCheckBox="RAL" showTextField="true" paddingTRBL="0 15 0 15"/>
+                    </HBox>
+                </left>
+                <center>
+                    <CheckBoxCustom fx:id="fxFinituraCustom" showTextField="true"/>
+                </center>
+            </BorderPane>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxFinituraEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxFinituraOsserv"/>
+    </HBox>
 
 </VBox>

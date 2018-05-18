@@ -30,7 +30,14 @@
     -fx-padding: 3 7 3 7;
 }
 
-.label.bold { -fx-font-weight: bold; }
-.bold .label { -fx-font-weight: bold; }
+.label.lblBold  { -fx-font-weight: bold; }
+.lblBold .label { -fx-font-weight: bold; }
 
 .centered { -fx-alignment: CENTER; }
+
+.label.lblFontSize11  { -fx-font-size: 11; }
+.lblFontSize11 .label { -fx-font-size: 11; }
+.lblFontSize11 .check-box .text { -fx-font-size: 11; }
+
+.lblUnderline .label  { -fx-underline: true; }
+.label.lblUnderline  { -fx-underline: true; }

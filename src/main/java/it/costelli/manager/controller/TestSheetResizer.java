@@ -58,13 +58,15 @@ class TestSheetResizer {
 		Pane centerBox = getPane(headerPane, 1);
 		Pane rightBox = getPane(headerPane, 2);
 
-		rightBox.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> billWidth - (logoBox.getWidth() + centerBox.getWidth()), logoBox.widthProperty(), centerBox.widthProperty()));
+//		rightBox.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> billWidth - (logoBox.getWidth() + centerBox.getWidth()), logoBox.widthProperty(), centerBox.widthProperty()));
+		centerBox.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> billWidth - (logoBox.getWidth() + rightBox.getWidth()), logoBox.widthProperty(), rightBox.widthProperty()));
 
 		ImageView imageView = (ImageView) logoBox.getChildren().get(0);
 		imageView.fitHeightProperty().bind(logoBox.heightProperty());
 		imageView.fitWidthProperty().bind(Bindings.createDoubleBinding(() -> 175.0 * imageView.getFitHeight() / 102.0, imageView.fitHeightProperty()));
 
-		centerBox.setPrefWidth(billWidth*0.5);
+//		centerBox.setPrefWidth(billWidth*0.5);
+		rightBox.setPrefWidth(270.0);
 	}
 	private static void bindRowsGrid(Pane headerPane, Pane rowPane) {
 		Pane logoBox = getPane(headerPane, 0);

@@ -5,7 +5,6 @@ import it.costelli.manager.logger.LogService;
 import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.FieldType;
-import it.costelli.manager.model.PdfField;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
 import it.costelli.manager.util.FxUtils;
@@ -19,15 +18,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,8 +42,8 @@ public class TestSheetController implements Initializable {
 
 	private static final SimpleLog logger = LogService.getLogger(TestSheetController.class);
 
-	@FXML
-	private VBox billContainer;
+
+	@FXML private VBox billContainer;
 
 	// Row 0
 	@FXML private LabelTextField fxFoglioCollaudoNum;
@@ -86,15 +82,76 @@ public class TestSheetController implements Initializable {
 	@FXML private LabelTextCombo fxRegolatriciRipetibilta;
 	@FXML private BoxEsito fxRegolatriciEsito;
 	@FXML private BoxOsservazioni fxRegolatriciOsserv;
-
-
+	// Row 7
+	@FXML private LabelTextCombo fxProvaFunzionamentoPressione;
+	@FXML private LabelTextCombo fxProvaFunzionamentoDurata;
+	@FXML private BoxEsito fxProvaFunzionamentoEsito;
+	@FXML private BoxOsservazioni fxProvaFunzionamentoOsserv;
+	// Row 8
+	@FXML private LabelTextCombo fxProvaSovrapressionePressione;
+	@FXML private LabelTextCombo fxProvaSovrapressioneDurata;
+	@FXML private BoxEsito fxProvaSovrapressioneEsito;
+	@FXML private BoxOsservazioni fxProvaSovrapressioneOsserv;
+	// Row 9
+	@FXML private CheckBoxCustom fxValvoleSequenze;
+	@FXML private CheckBoxCustom fxValvoleStrozzatori;
+	@FXML private CheckBoxCustom fxValvoleTenutaNonRitorno;
+	@FXML private CheckBoxCustom fxValvoleRiduzPressione;
+	@FXML private CheckBoxCustom fxValvoleRegolPortataCompens;
+	@FXML private CheckBoxCustom fxValvoleTenutaNonRitornoPil;
+	@FXML private BoxEsito fxValvoleEsito;
+	@FXML private BoxOsservazioni fxValvoleOsserv;
+	// Row 10
+	@FXML private LabelTextField fxAccessoriAccumulatore;
+	@FXML private LabelTextField fxAccessoriP0Bar;
+	@FXML private LabelTextField fxAccessoriNorme;
+	@FXML private CheckBoxCustom fxAccessoriFiltriAsp;
+	@FXML private CheckBoxCustom fxAccessoriFiltriMan;
+	@FXML private CheckBoxCustom fxAccessoriFiltriRit;
+	@FXML private CheckBoxCustom fxAccessoriScambioCaloreAria;
+	@FXML private CheckBoxCustom fxAccessoriScambioCaloreAcqua;
+	@FXML private CheckBoxCustom fxAccessoriScambioCaloreCustom;
+	@FXML private BoxEsito fxAccessoriEsito;
+	@FXML private BoxOsservazioni fxAccessoriOsserv;
+	// Row 11
+	@FXML private CheckBoxCustom fxStrumentiManometro;
+	@FXML private CheckBoxCustom fxStrumentiTermometro;
+	@FXML private CheckBoxCustom fxStrumentiPressTrasd;
+	@FXML private CheckBoxCustom fxStrumentiTermostato;
+	@FXML private CheckBoxCustom fxStrumentiLivelloStato;
+	@FXML private CheckBoxCustom fxStrumentiCustom;
+	@FXML private BoxEsito fxStrumentiEsito;
+	@FXML private BoxOsservazioni fxStrumentiOsserv;
+	// Row 12
+	@FXML private CheckBoxCustom fxTenuteTappi;
+	@FXML private CheckBoxCustom fxTenuteBlocchi;
+	@FXML private CheckBoxCustom fxTenuteOblo;
+	@FXML private CheckBoxCustom fxTenuteValvole;
+	@FXML private CheckBoxCustom fxTenuteSerbatoio;
+	@FXML private CheckBoxCustom fxTenuteRaccordi;
+	@FXML private BoxEsito fxTenuteEsito;
+	@FXML private BoxOsservazioni fxTenuteOsserv;
+	// Row 13
+	@FXML private CheckBoxCustom fxFluidoOlioMinerale;
+	@FXML private CheckBoxCustom fxFluidoCustom;
+	@FXML private LabelTextField fxFluidoTempCollaudo;
+	@FXML private LabelTextField fxFluidoTempOlio;
+	@FXML private BoxEsito fxFluidoEsito;
+	@FXML private BoxOsservazioni fxFluidoOsserv;
+	// Row 14
+	public CheckBoxCustom fxFinituraStandard;
+	public CheckBoxCustom fxFinituraRal;
+	public CheckBoxCustom fxFinituraCustom;
+	public BoxEsito fxFinituraEsito;
+	public BoxOsservazioni fxFinituraOsserv;
+	
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		TestSheetResizer.resizeBillView(billContainer, 900);
+		TestSheetResizer.resizeBillView(billContainer, 950);
 		manageSpecificResize();
 		manageFieldBindings();
 	}
@@ -103,7 +160,13 @@ public class TestSheetController implements Initializable {
 		// POMPE - row 5
 		Pane row5 = (Pane) fxPompeCustom.getParent();
 		fxPompeCustom.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> row5.getWidth() * 0.4, row5.widthProperty()));
-		((VBox) fxPompeCustom.getLeft()).setPadding(new Insets(0));
+//		((VBox) fxPompeCustom.getLeft()).setPadding(new Insets(0));
+		
+		// TENUTE - row 12
+		fxTenuteTappi.prefHeightProperty().bind(fxTenuteSerbatoio.heightProperty());
+		fxTenuteBlocchi.prefHeightProperty().bind(fxTenuteRaccordi.heightProperty());
+		fxTenuteOblo.prefHeightProperty().bind(fxTenuteSerbatoio.heightProperty());
+		fxTenuteValvole.prefHeightProperty().bind(fxTenuteRaccordi.heightProperty());
 	}
 
 	private void manageFieldBindings() {
@@ -159,6 +222,90 @@ public class TestSheetController implements Initializable {
 		addEditableComboUnity(REGOLATRICI_RIPETIBILITA_UNITY, fxRegolatriciRipetibilta.getComboBox());
 		addEditableCheckBox(REGOLATRICI_ESITO, fxRegolatriciEsito.getCheckBox(), fxRegolatriciOsserv.getTextArea());
 		addEditableText(REGOLATRICI_OSSERV, fxRegolatriciOsserv.getTextArea());
+
+		// Row 7
+		addEditableText(PROVA_FUNZIONAMENTO_PRESSIONE_TEXT, fxProvaFunzionamentoPressione.getTextField());
+		addEditableComboUnity(PROVA_FUNZIONAMENTO_PRESSIONE_UNITY, fxProvaFunzionamentoPressione.getComboBox());
+		addEditableText(PROVA_FUNZIONAMENTO_DURATA_TEXT, fxProvaFunzionamentoDurata.getTextField());
+		addEditableComboUnity(PROVA_FUNZIONAMENTO_DURATA_UNITY, fxProvaFunzionamentoDurata.getComboBox());
+		addEditableCheckBox(PROVA_FUNZIONAMENTO_ESITO, fxProvaFunzionamentoEsito.getCheckBox(), fxProvaFunzionamentoOsserv.getTextArea());
+		addEditableText(PROVA_FUNZIONAMENTO_OSSERV, fxProvaFunzionamentoOsserv.getTextArea());
+
+		// Row 8
+		addEditableText(PROVA_SOVRAPRESSIONE_PRESSIONE_TEXT, fxProvaSovrapressionePressione.getTextField());
+		addEditableComboUnity(PROVA_SOVRAPRESSIONE_PRESSIONE_UNITY, fxProvaSovrapressionePressione.getComboBox());
+		addEditableText(PROVA_SOVRAPRESSIONE_DURATA_TEXT, fxProvaSovrapressioneDurata.getTextField());
+		addEditableComboUnity(PROVA_SOVRAPRESSIONE_DURATA_UNITY, fxProvaSovrapressioneDurata.getComboBox());
+		addEditableCheckBox(PROVA_SOVRAPRESSIONE_ESITO, fxProvaSovrapressioneEsito.getCheckBox(), fxProvaSovrapressioneOsserv.getTextArea());
+		addEditableText(PROVA_SOVRAPRESSIONE_OSSERV, fxProvaSovrapressioneOsserv.getTextArea());
+
+		// Row 9
+		addEditableCheckBox(VALVOLE_SEQUENZE, fxValvoleSequenze.getCheckBox());
+		addEditableCheckBox(VALVOLE_STROZZATORI, fxValvoleStrozzatori.getCheckBox());
+		addEditableCheckBox(VALVOLE_TENUTA_NON_RITORNO, fxValvoleTenutaNonRitorno.getCheckBox());
+		addEditableCheckBox(VALVOLE_RIDUZ_PRESSIONE, fxValvoleRiduzPressione.getCheckBox());
+		addEditableCheckBox(VALVOLE_REGOL_PORTATA_COMPENS, fxValvoleRegolPortataCompens.getCheckBox());
+		addEditableCheckBox(VALVOLE_TENUTA_NON_RITORNO_PIL, fxValvoleTenutaNonRitornoPil.getCheckBox());
+		addEditableCheckBox(VALVOLE_ESITO, fxValvoleEsito.getCheckBox(), fxValvoleOsserv.getTextArea());
+		addEditableText(VALVOLE_OSSERV, fxValvoleOsserv.getTextArea());
+
+		// Row 10
+		addEditableText(ACCESSORI_ACCUMULATORE, fxAccessoriAccumulatore.getTextField());
+		addEditableText(ACCESSORI_P0_BAR, fxAccessoriP0Bar.getTextField());
+		addEditableText(ACCESSORI_NORME, fxAccessoriNorme.getTextField());
+		addEditableCheckBox(ACCESSORI_FILTRI_ASP, fxAccessoriFiltriAsp.getCheckBox(), fxAccessoriFiltriAsp.getTextField());
+		addEditableText(ACCESSORI_FILTRI_ASP_TEXT, fxAccessoriFiltriAsp.getTextField());
+		addEditableCheckBox(ACCESSORI_FILTRI_MAN, fxAccessoriFiltriMan.getCheckBox(), fxAccessoriFiltriMan.getTextField());
+		addEditableText(ACCESSORI_FILTRI_MAN_TEXT, fxAccessoriFiltriMan.getTextField());
+		addEditableCheckBox(ACCESSORI_FILTRI_RIT, fxAccessoriFiltriRit.getCheckBox(), fxAccessoriFiltriRit.getTextField());
+		addEditableText(ACCESSORI_FILTRI_RIT_TEXT, fxAccessoriFiltriRit.getTextField());
+		addEditableCheckBox(ACCESSORI_SCAMBIO_CALORE_ARIA, fxAccessoriScambioCaloreAria.getCheckBox());
+		addEditableCheckBox(ACCESSORI_SCAMBIO_CALORE_ACQUA, fxAccessoriScambioCaloreAcqua.getCheckBox());
+		addEditableCheckBox(ACCESSORI_SCAMBIO_CALORE_CUSTOM, fxAccessoriScambioCaloreCustom.getCheckBox(), fxAccessoriScambioCaloreCustom.getTextField());
+		addEditableText(ACCESSORI_SCAMBIO_CALORE_CUSTOM_TEXT, fxAccessoriScambioCaloreCustom.getTextField());
+		addEditableCheckBox(ACCESSORI_ESITO, fxAccessoriEsito.getCheckBox(), fxAccessoriOsserv.getTextArea());
+		addEditableText(ACCESSORI_OSSERV, fxAccessoriOsserv.getTextArea());
+
+		// Row 11
+		addEditableCheckBox(STRUMENTI_MANOMETRO, fxStrumentiManometro.getCheckBox());
+		addEditableCheckBox(STRUMENTI_TERMOMETRO, fxStrumentiTermometro.getCheckBox());
+		addEditableCheckBox(STRUMENTI_PRESS_TRASD, fxStrumentiPressTrasd.getCheckBox());
+		addEditableCheckBox(STRUMENTI_TERMOSTATO, fxStrumentiTermostato.getCheckBox());
+		addEditableCheckBox(STRUMENTI_LIVELLOSTATO, fxStrumentiLivelloStato.getCheckBox());
+		addEditableCheckBox(STRUMENTI_CUSTUM, fxStrumentiCustom.getCheckBox(), fxStrumentiCustom.getTextField());
+		addEditableText(STRUMENTI_CUSTOM_TEXT, fxStrumentiCustom.getTextField());
+		addEditableCheckBox(STRUMENTI_ESITO, fxStrumentiEsito.getCheckBox(), fxStrumentiOsserv.getTextArea());
+		addEditableText(STRUMENTI_OSSERV, fxStrumentiOsserv.getTextArea());
+
+		// Row 12
+		addEditableCheckBox(TENUTE_TAPPI, fxTenuteTappi.getCheckBox());
+		addEditableCheckBox(TENUTE_BLOCCHI, fxTenuteBlocchi.getCheckBox());
+		addEditableCheckBox(TENUTE_OBLO, fxTenuteOblo.getCheckBox());
+		addEditableCheckBox(TENUTE_VALVOLE, fxTenuteValvole.getCheckBox());
+		addEditableCheckBox(TENUTE_SERBATOIO, fxTenuteSerbatoio.getCheckBox(), fxTenuteSerbatoio.getTextField());
+		addEditableText(TENUTE_SERBATOIO_TEXT, fxTenuteSerbatoio.getTextField());
+		addEditableCheckBox(TENUTE_RACCORDI, fxTenuteRaccordi.getCheckBox(), fxTenuteRaccordi.getTextField());
+		addEditableText(TENUTE_RACCORDI_TEXT, fxTenuteRaccordi.getTextField());
+		addEditableCheckBox(TENUTE_ESITO, fxTenuteEsito.getCheckBox(), fxTenuteOsserv.getTextArea());
+		addEditableText(TENUTE_OSSERV, fxTenuteOsserv.getTextArea());
+
+		// Row 13
+		addEditableCheckBox(FLUIDO_OLIO_MINERALE, fxFluidoOlioMinerale.getCheckBox());
+		addEditableCheckBox(FLUIDO_CUSTOM, fxFluidoCustom.getCheckBox(), fxFluidoCustom.getTextField());
+		addEditableText(FLUIDO_CUSTOM_TEXT, fxFluidoCustom.getTextField());
+		addEditableText(FLUIDO_TEMP_AMBIENTE_COLLAUDO_TEXT, fxFluidoTempCollaudo.getTextField());
+		addEditableText(FLUIDO_TEMP_OLIO_TEXT, fxFluidoTempOlio.getTextField());
+		addEditableCheckBox(FLUIDO_ESITO, fxFluidoEsito.getCheckBox(), fxFluidoOsserv.getTextArea());
+		addEditableText(FLUIDO_OSSERV, fxFluidoOsserv.getTextArea());
+
+		// Row 14
+		addEditableCheckBox(FINITURA_STANDARD, fxFinituraStandard.getCheckBox());
+		addEditableCheckBox(FINITURA_RAL, fxFinituraRal.getCheckBox(), fxFinituraRal.getTextField());
+		addEditableText(FINITURA_RAL_TEXT, fxFinituraRal.getTextField());
+		addEditableCheckBox(FINITURA_CUSTOM, fxFinituraCustom.getCheckBox(), fxFinituraCustom.getTextField());
+		addEditableText(FINITURA_CUSTOM_TEXT, fxFinituraCustom.getTextField());
+		addEditableCheckBox(FINITURA_ESITO, fxFinituraEsito.getCheckBox(), fxFinituraOsserv.getTextArea());
+		addEditableText(FINITURA_OSSERV, fxFinituraOsserv.getTextArea());
 	}
 	private void addEditableText(FieldType fieldType, TextInputControl textInput) {
 		fieldsMap.put(fieldType, new EditableText(textInput));

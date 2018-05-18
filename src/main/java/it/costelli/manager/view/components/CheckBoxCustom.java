@@ -9,6 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import org.apache.commons.lang3.StringUtils;
 
 import static it.costelli.manager.util.StrUtils.strf;
 
@@ -30,13 +31,11 @@ public class CheckBoxCustom extends BorderPane {
 		VBox leftBox = new VBox(checkBox);
 		setLeft(leftBox);
 
-		showTextField.addListener((obs,old,nez) -> {
-			if(nez) {
-				setCenter(textField);
-				leftBox.setPadding(new Insets(0, 5, 0, 0));
-			}
-		});
+		showTextField.addListener((obs,old,nez) -> { if(nez) setCenter(textField); });
 		paddingTRBL.addListener((obs, old, nez) -> this.setStyle(strf("-fx-padding: %s", getPaddingTRBL())) );
+
+		Bindings.createBooleanBinding(() -> StringUtils.isNotBlank(getLabelCheckBox()) && isShowTextField(), labelCheckBox, showTextField)
+			.addListener((obs,old,nez) -> leftBox.setPadding(new Insets(0, (nez ? 10 : 0), 0, 0)));
 
 		this.checkBox.textProperty().bind(labelCheckBox);
 		this.textField.disableProperty().bind(Bindings.createBooleanBinding(() -> !checkBox.isSelected(), checkBox.selectedProperty()));
