@@ -29,3 +29,8 @@
 .text-field {
     -fx-padding: 3 7 3 7;
 }
+
+.label.bold { -fx-font-weight: bold; }
+.bold .label { -fx-font-weight: bold; }
+
+.centered { -fx-alignment: CENTER; }

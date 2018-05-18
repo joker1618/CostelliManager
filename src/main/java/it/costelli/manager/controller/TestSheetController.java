@@ -3,19 +3,18 @@ package it.costelli.manager.controller;
 import com.itextpdf.text.DocumentException;
 import it.costelli.manager.logger.LogService;
 import it.costelli.manager.logger.SimpleLog;
+import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
 import it.costelli.manager.util.FxUtils;
 import it.costelli.manager.util.StrUtils;
-import it.costelli.manager.view.components.BoxEsito;
-import it.costelli.manager.view.components.BoxOsservazioni;
-import it.costelli.manager.view.components.CheckBoxCustom;
-import it.costelli.manager.view.components.LabelTextField;
+import it.costelli.manager.view.components.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
@@ -49,7 +49,7 @@ public class TestSheetController implements Initializable {
 	@FXML
 	private VBox billContainer;
 
-	// Row 1
+	// Row 0
 	@FXML private LabelTextField fxFoglioCollaudoNum;
 	@FXML private LabelTextField fxCliente;
 	@FXML private LabelTextField fxImpiantoTipo;
@@ -57,20 +57,20 @@ public class TestSheetController implements Initializable {
 	@FXML private LabelTextField fxCommessa;
 	@FXML private LabelTextField fxMatricola;
 	@FXML private LabelTextField fxCod;
-	// Row 3
+	// Row 2
 	@FXML private BoxEsito fxVerificaConformitaEsito;
 	@FXML private BoxOsservazioni fxVerificaConformitaOsserv;
-	// Row 4
+	// Row 3
 	@FXML private LabelTextField fxControlloDimensionaleText;
 	@FXML private BoxEsito fxControlloDimensionaleEsito;
 	@FXML private BoxOsservazioni fxControlloDimensionaleOsserv;
-	// Row 5
+	// Row 4
 	@FXML private CheckBoxCustom fxGuarnizioniStandard;
 	@FXML private CheckBoxCustom fxGuarnizioniViton;
 	@FXML private CheckBoxCustom fxGuarnizioniCustom;
 	@FXML private BoxEsito fxGuarnizioniEsito;
 	@FXML private BoxOsservazioni fxGuarnizioniOsserv;
-	// Row 6
+	// Row 5
 	@FXML private CheckBoxCustom fxPompeVariabile;
 	@FXML private CheckBoxCustom fxPompeFissa;
 	@FXML private CheckBoxCustom fxPompeIngranaggi;
@@ -81,6 +81,13 @@ public class TestSheetController implements Initializable {
 	@FXML private CheckBoxCustom fxPompePortataMin;
 	@FXML private BoxEsito fxPompeEsito;
 	@FXML private BoxOsservazioni fxPompeOsserv;
+	// Row 6
+	@FXML private LabelTextCombo fxRegolatriciTaratura;
+	@FXML private LabelTextCombo fxRegolatriciRipetibilta;
+	@FXML private BoxEsito fxRegolatriciEsito;
+	@FXML private BoxOsservazioni fxRegolatriciOsserv;
+
+
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
 
@@ -145,14 +152,22 @@ public class TestSheetController implements Initializable {
 		addEditableCheckBox(POMPE_ESITO, fxPompeEsito.getCheckBox(), fxPompeOsserv.getTextArea());
 		addEditableText(POMPE_OSSERV, fxPompeOsserv.getTextArea());
 
-
-
+		// Row 6
+		addEditableText(REGOLATRICI_TARATURA_TEXT, fxRegolatriciTaratura.getTextField());
+		addEditableComboUnity(REGOLATRICI_TARATURA_UNITY, fxRegolatriciTaratura.getComboBox());
+		addEditableText(REGOLATRICI_RIPETIBILITA_TEXT, fxRegolatriciRipetibilta.getTextField());
+		addEditableComboUnity(REGOLATRICI_RIPETIBILITA_UNITY, fxRegolatriciRipetibilta.getComboBox());
+		addEditableCheckBox(REGOLATRICI_ESITO, fxRegolatriciEsito.getCheckBox(), fxRegolatriciOsserv.getTextArea());
+		addEditableText(REGOLATRICI_OSSERV, fxRegolatriciOsserv.getTextArea());
 	}
 	private void addEditableText(FieldType fieldType, TextInputControl textInput) {
 		fieldsMap.put(fieldType, new EditableText(textInput));
 	}
 	private void addEditableCheckBox(FieldType fieldType, CheckBox checkBox, Node... nodesToDisable) {
 		fieldsMap.put(fieldType, new EditableCheckBox(checkBox, nodesToDisable));
+	}
+	private void addEditableComboUnity(FieldType fieldType, ComboBox<EnumUnity> comboUnity) {
+		fieldsMap.put(fieldType, new EditableComboUnity(comboUnity));
 	}
 
 	@FXML
@@ -226,6 +241,17 @@ public class TestSheetController implements Initializable {
 		@Override
 		public String toStringField() {
 			return getNode().isSelected() ? "X" : "";
+		}
+	}
+	private class EditableComboUnity extends EditableField<ComboBox<EnumUnity>,SimpleObjectProperty<EnumUnity>> {
+		EditableComboUnity(ComboBox<EnumUnity> node) {
+			super(node, new SimpleObjectProperty<>());
+			getProperty().bind(getNode().getSelectionModel().selectedItemProperty());
+		}
+
+		@Override
+		public String toStringField() {
+			return getNode().getSelectionModel().getSelectedItem().getLabel();
 		}
 	}
 }
