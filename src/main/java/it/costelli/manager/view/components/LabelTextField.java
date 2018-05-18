@@ -26,7 +26,7 @@ public class LabelTextField extends BorderPane {
 		this.label.textProperty().bind(labelField);
 		this.label.prefHeightProperty().bind(heightProperty());
 		this.label.setAlignment(Pos.CENTER_LEFT);
-		this.label.setPadding(new Insets(0, 5, 0, 0));
+		this.label.setPadding(new Insets(0, 10, 0, 0));
 	}
 
 	public String getLabelField() {

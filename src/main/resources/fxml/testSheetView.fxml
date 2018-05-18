@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import it.costelli.manager.view.components.*?>
+
+<VBox stylesheets="@/css/testSheetView.css"
+      fx:id="billContainer"
+      fx:controller="it.costelli.manager.controller.TestSheetController"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+    <!-- Row 1 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem,boxImage">
+            <ImageView>
+                <Image url="@/images/LogoCostelli.png" />
+            </ImageView>
+        </VBox>
+        <VBox styleClass="boxElem">
+            <LabelTextField labelField="FOGLIO DI COLLAUDO N." fx:id="fxFoglioCollaudoNum" />
+            <LabelTextField labelField="CLIENTE" fx:id="fxCliente"/>
+            <LabelTextField labelField="IMPIANTO TIPO" fx:id="fxImpiantoTipo"/>
+        </VBox>
+        <VBox styleClass="boxElem">
+            <LabelTextField labelField="SCHEMA N°" fx:id="fxSchedaNum"/>
+            <LabelTextField labelField="Ordine/Commessa" fx:id="fxCommessa"/>
+            <HBox style="-fx-spacing:15">
+                <LabelTextField labelField="Matricola" fx:id="fxMatricola"/>
+                <LabelTextField labelField="Cod." fx:id="fxCod"/>
+            </HBox>
+        </VBox>
+    </HBox>
+
+    <!-- Row 2 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>
+        <VBox styleClass="boxElem"><Label text="ESITO"/></VBox>
+        <VBox styleClass="boxElem"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
+    </HBox>
+
+    <!-- Row 3 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem"><Label text="VERIFICA CONFORMITA ALLA DISTINTA BASE"/></VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxVerificaConformitaEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxVerificaConformitaOsserv"/>
+    </HBox>
+
+    <!-- Row 4 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="CONTROLLO DIMENSIONALE E DISPOSIZIONE"/>
+            <LabelTextField labelField="DI MONTAGGIO RISPETTO DISEGNO" fx:id="fxControlloDimensionaleText"/>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxControlloDimensionaleEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxControlloDimensionaleOsserv"/>
+    </HBox>
+
+</VBox>

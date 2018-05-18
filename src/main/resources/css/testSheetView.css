@@ -1,0 +1,28 @@
+#billContainer {
+/*
+    -fx-border-color: red;
+    -fx-background-color: blue;
+*/
+    -fx-border-color: black;
+    -fx-border-width: 1 0 0 1;
+}
+
+.boxRow {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 1 0;
+}
+
+.boxElem {
+    -fx-border-color: black;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+
+.boxImage {
+    -fx-padding: 0;
+}
+
+.text-field {
+    -fx-padding: 3 7 3 7;
+}

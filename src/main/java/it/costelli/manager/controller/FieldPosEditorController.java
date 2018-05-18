@@ -75,7 +75,7 @@ public class FieldPosEditorController implements Initializable {
 		try {
 			int rowNum = 0;
 			for (FieldType ft : FieldType.values()) {
-				PdfField pdfField = PdfFacade.getTextMatrix(ft);
+				PdfField pdfField = PdfFacade.getFieldPosition(ft);
 				PosRow posRow = new PosRow(ft, pdfField);
 				posRowList.add(posRow);
 
@@ -130,9 +130,7 @@ public class FieldPosEditorController implements Initializable {
 			PDFFont fontType = fxComboFontType.getSelectionModel().getSelectedItem();
 			Integer fontSize = fxComboFontSize.getSelectionModel().getSelectedItem();
 			PdfField pdfField = new PdfField(Converter.stringToDouble(fxPosX.getText()), Converter.stringToDouble(fxPosY.getText()));
-			Map<PdfField,String> outPdfMap = new HashMap<>();
-			outPdfMap.put(pdfField, fxText.getText());
-			PdfFacade.writePDF(outFile.toPath(), fontType, fontSize, outPdfMap);
+			PdfFacade.writOnPDF(outFile.toPath(), fontType, fontSize, Pair.of(pdfField, fxText.getText()));
 			FxUtils.showAlertInfo("Nuovo PDF creato", "Path: %s", outFile.toPath().toAbsolutePath());
 		}
 	}

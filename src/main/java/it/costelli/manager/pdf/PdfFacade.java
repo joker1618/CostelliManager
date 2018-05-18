@@ -12,6 +12,7 @@ import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
 import it.costelli.manager.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class PdfFacade {
 
 	private static Map<FieldType,PdfField> fieldMap;
 
-	public static PdfField getTextMatrix(FieldType fieldType) throws IOException {
+	public static PdfField getFieldPosition(FieldType fieldType) throws IOException {
 		if(fieldMap == null) {
 			fieldMap = new HashMap<>();
 			List<String> lines = Files.readAllLines(Conf.RESOURCE_FIELDS_POS);
@@ -74,7 +75,7 @@ public class PdfFacade {
 		logger.info("Updated field positions");
 	}
 
-	public static void writePDF(Path outPath, PDFFont pdfFont, int fontSize, Map<PdfField,String> pdfOutput) throws IOException, DocumentException {
+	public static void fillPDFFields(Path outPath, PDFFont pdfFont, int fontSize, Map<FieldType,String> pdfData) throws IOException, DocumentException {
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 
@@ -87,15 +88,46 @@ public class PdfFacade {
 			// Get first page
 			PdfContentByte over = stamper.getOverContent(1);
 
-			for(Map.Entry<PdfField,String> entry : pdfOutput.entrySet()) {
+			for(Map.Entry<FieldType,String> entry : pdfData.entrySet()) {
+				PdfField fpos = getFieldPosition(entry.getKey());
 				if(StringUtils.isNotBlank(entry.getValue())) {
 					over.beginText();
 					over.setFontAndSize(bf, fontSize);
-					over.setTextMatrix(entry.getKey().getX(), entry.getKey().getY());
+					over.setTextMatrix(fpos.getX(), fpos.getY());
 					over.showText(entry.getValue());
 					over.endText();
 				}
 			}
+
+			logger.info(strf("Created new PDF test sheet at '%s'", outPath));
+
+		} finally {
+			if(stamper != null)	stamper.close();
+			if(reader != null)	reader.close();
+		}
+	}
+	public static void writOnPDF(Path outPath, PDFFont pdfFont, int fontSize, Pair<PdfField,String> pdfData) throws IOException, DocumentException {
+		if(StringUtils.isBlank(pdfData.getValue())) {
+			return;
+		}
+
+		PdfReader reader = null;
+		PdfStamper stamper = null;
+
+		try {
+			reader = new PdfReader(Conf.RESOURCE_TEMPLATE_TEST_SHEET.toString());
+			stamper = new PdfStamper(reader, new FileOutputStream(outPath.toFile()));
+
+			BaseFont bf = BaseFont.createFont(pdfFont.label(), BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
+			// Get first page
+			PdfContentByte over = stamper.getOverContent(1);
+
+			over.beginText();
+			over.setFontAndSize(bf, fontSize);
+			over.setTextMatrix(pdfData.getKey().getX(), pdfData.getKey().getY());
+			over.showText(pdfData.getValue());
+			over.endText();
 
 			logger.info(strf("Created new PDF at '%s'", outPath));
 
@@ -104,5 +136,6 @@ public class PdfFacade {
 			if(reader != null)	reader.close();
 		}
 	}
+
 
 }
