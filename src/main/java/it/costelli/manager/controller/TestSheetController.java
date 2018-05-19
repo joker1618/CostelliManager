@@ -19,11 +19,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -48,7 +46,8 @@ public class TestSheetController implements Initializable {
 
 	private static final SimpleLog logger = LogService.getLogger(TestSheetController.class);
 
-	@FXML private VBox container;
+	@FXML private ScrollPane scrollPaneContainer;
+	@FXML private VBox boxContainer;
 
 	// Row 0
 	@FXML private LabelTextField fxFoglioCollaudoNum;
@@ -184,8 +183,15 @@ public class TestSheetController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		int sheetWidth = 950;
+
 		manageSpecificBindings();
-		TestSheetResizer.resizeBillView(container, 950);
+
+		TestSheetResizer.resizeBillView(boxContainer, sheetWidth);
+
+		scrollPaneContainer.setPadding(new Insets(2.0));
+		scrollPaneContainer.setPrefWidth(sheetWidth + 20.0);
+
 		manageFieldBindings();
 	}
 

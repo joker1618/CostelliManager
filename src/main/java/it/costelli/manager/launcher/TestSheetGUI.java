@@ -19,10 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.Effect;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.tuple.Pair;
@@ -60,15 +57,12 @@ public class TestSheetGUI extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/testSheetView.fxml"));
-		VBox testSheetPane = fxmlLoader.load();
+		ScrollPane testSheetPane = fxmlLoader.load();
 		testSheetCtrl = fxmlLoader.getController();
-		ScrollPane scrollPane = new ScrollPane(testSheetPane);
-		scrollPane.setPadding(new Insets(2.0));
-		scrollPane.setPrefWidth(970.0);
 
 		VBox rightBox = createRightBox();
 
-		HBox hBox = new HBox(scrollPane, rightBox);
+		HBox hBox = new HBox(testSheetPane, rightBox);
 
 		Scene scene = new Scene(hBox);
 		stage.setScene(scene);
