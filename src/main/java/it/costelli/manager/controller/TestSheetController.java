@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static it.costelli.manager.model.FieldType.*;
+import static it.costelli.manager.util.StuffUtils.display;
 
 /**
  * Created by f.barbano on 18/05/2018.
@@ -192,7 +193,7 @@ public class TestSheetController implements Initializable {
 		TestSheetResizer.resizeBillView(sheetBox, sheetWidth);
 
 		scrollPaneContainer.setPadding(new Insets(2.0));
-		scrollPaneContainer.setPrefWidth(sheetWidth + 20.0);
+		scrollPaneContainer.setMaxWidth(sheetWidth + 20.0);
 
 		manageFieldBindings();
 	}
