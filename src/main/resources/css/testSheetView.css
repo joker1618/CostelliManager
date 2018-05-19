@@ -1,8 +1,5 @@
-#billContainer {
-/*
-    -fx-border-color: red;
-    -fx-background-color: blue;
-*/
+#container {
+    -fx-background-color: #ffffcc;
     -fx-border-color: black;
     -fx-border-width: 1 0 0 1;
 }
@@ -21,6 +18,7 @@
 
 .boxSpaced5  { -fx-spacing: 5; }
 .boxSpaced10 { -fx-spacing: 10; }
+.boxSpaced15 { -fx-spacing: 15; }
 
 .boxImage {
     -fx-padding: 0;

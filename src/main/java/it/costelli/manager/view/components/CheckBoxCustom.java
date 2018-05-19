@@ -42,6 +42,14 @@ public class CheckBoxCustom extends BorderPane {
 		leftBox.setAlignment(Pos.CENTER);
 	}
 
+	public boolean isSelected() {
+		return checkBox.isSelected();
+	}
+
+	public String getText() {
+		return textField.getText();
+	}
+
 	public String getLabelCheckBox() {
 		return labelCheckBox.get();
 	}

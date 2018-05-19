@@ -21,18 +21,20 @@ public class LabelTextField extends BorderPane {
 	public LabelTextField() {
 		super();
 
+		setLeft(label);
+		setCenter(textField);
+
+		this.label.prefHeightProperty().bind(heightProperty());
+		this.label.setAlignment(Pos.CENTER_LEFT);
+
 		labelField.addListener((obs,old,nez) -> {
 			if(StringUtils.isNotBlank(nez)) {
 				label.setText(nez);
-				setLeft(label);
+				label.setPadding(new Insets(0, 10, 0, 0));
+			} else {
+				getChildren().remove(label);
 			}
 		});
-		setCenter(textField);
-
-//		this.label.textProperty().bind(labelField);
-		this.label.prefHeightProperty().bind(heightProperty());
-		this.label.setAlignment(Pos.CENTER_LEFT);
-		this.label.setPadding(new Insets(0, 10, 0, 0));
 	}
 
 	public String getLabelField() {

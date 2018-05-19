@@ -7,7 +7,7 @@
 <?import it.costelli.manager.view.components.*?>
 
 <VBox stylesheets="@/css/testSheetView.css"
-      fx:id="billContainer"
+      fx:id="container"
       fx:controller="it.costelli.manager.controller.TestSheetController"
       xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
@@ -26,7 +26,7 @@
         <VBox styleClass="boxElem">
             <LabelTextField labelField="SCHEMA N°" fx:id="fxSchedaNum"/>
             <LabelTextField labelField="Ordine/Commessa" fx:id="fxCommessa"/>
-            <HBox style="-fx-spacing:15">
+            <HBox styleClass="boxSpaced15">
                 <LabelTextField labelField="Matricola" fx:id="fxMatricola"/>
                 <LabelTextField labelField="Cod." fx:id="fxCod"/>
             </HBox>
@@ -298,6 +298,114 @@
         </VBox>
         <BoxEsito styleClass="boxElem" fx:id="fxFinituraEsito"/>
         <BoxOsservazioni styleClass="boxElem" fx:id="fxFinituraOsserv"/>
+    </HBox>
+
+    <!-- Row 15 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem,lblFontSize11">
+            <Label text="AL TERMINE DEL COLLAUDO CONTROLLARE"/>
+            <Label text="LA PULIZIA ALL'INTERNO DEL SERBATOIO"/>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxPuliziaSerbatoioEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxPuliziaSerbatoioOsserv"/>
+    </HBox>
+
+    <!-- Row 16 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="BOBINE" styleClass="lblBold"/>
+            <BorderPane styleClass="lblFontSize11">
+                <left>
+                    <VBox styleClass="boxSpaced10" style="-fx-padding: 0 30 0 10">
+                        <Label text="ELETTROVALVOLE" />
+                        <Label text="PROPORZIONALI" />
+                    </VBox>
+                </left>
+                <center>
+                    <BorderPane>
+                        <top>
+                            <HBox styleClass="boxSpaced10" style="-fx-padding: 0 0 10 0">
+                                <LabelTextField fx:id="fxBobineV" labelField="V."/>
+                                <LabelTextField fx:id="fxBobineHz" labelField="Hz."/>
+                            </HBox>
+                        </top>
+                        <center><LabelTextField fx:id="fxBobineVdc" labelField="Vdc."/></center>
+                    </BorderPane>
+                </center>
+            </BorderPane>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxBobineEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxBobineOsserv"/>
+    </HBox>
+
+    <!-- Row 17 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="MOTORI" styleClass="lblBold"/>
+            <VBox styleClass="lblFontSize11">
+
+            </VBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxMotoriEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxMotoriOsserv"/>
+    </HBox>
+
+    <!-- Row 18 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="CERTIFICATI" styleClass="lblBold"/>
+            <VBox styleClass="lblFontSize11,boxSpaced10">
+                <CheckBoxCustom fx:id="fxCertificatiMotoriElettrici" labelCheckBox="MOTORI ELETTRICI" showTextField="true"/>
+                <CheckBoxCustom fx:id="fxCertificatiPompe" labelCheckBox="POMPE" showTextField="true"/>
+                <CheckBoxCustom fx:id="fxCertificatiAccumulatori" labelCheckBox="ACCUMULATORI" showTextField="true"/>
+                <BorderPane>
+                    <left><CheckBoxCustom fx:id="fxCertificatiCustom" showTextField="true" style="-fx-padding: 0 15 0 0"/></left>
+                    <center><LabelTextField fx:id="fxCertificatiCustomTypeText" labelField="" /></center>
+                </BorderPane>
+            </VBox>
+        </VBox>
+        <BoxEsito styleClass="boxElem" fx:id="fxCertificatiEsito"/>
+        <BoxOsservazioni styleClass="boxElem" fx:id="fxCertificatiOsserv"/>
+    </HBox>
+
+    <!-- Row 19 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="RUMORE" styleClass="lblBold"/>
+        </VBox>
+    </HBox>
+
+    <!-- Row 20 -->
+    <HBox styleClass="boxRow">
+        <VBox styleClass="boxElem">
+            <Label text="PER IMPIANTO RILASCIATO CON ESITO NON CONFORME ALLEGARE MOTIVAZIONE" />
+        </VBox>
+        <VBox styleClass="boxElem">
+            <Label text="FIRMA COLLAUDATORE" />
+        </VBox>
+    </HBox>
+
+    <!-- Row 21 -->
+    <HBox styleClass="boxRow,lblFontSize11,lblBold">
+        <BorderPane styleClass="boxElem">
+            <top><Label text="MONTATO DA"/></top>
+            <center><LabelTextField fx:id="fxLastMontatoDa" /></center>
+        </BorderPane>
+        <BorderPane styleClass="boxElem">
+            <top><Label text="COLLAUDATORE"/></top>
+            <center><LabelTextField fx:id="fxLastCollaudatore" /></center>
+        </BorderPane>
+        <VBox styleClass="boxElem">
+            <Label text="FIRMA"/>
+        </VBox>
+        <BorderPane styleClass="boxElem">
+            <top><Label text="RESPONSABILE"/></top>
+            <center><LabelTextField fx:id="fxLastResponsabile" /></center>
+        </BorderPane>
+        <BorderPane styleClass="boxElem">
+            <top><Label text="DATA"/></top>
+            <center><DatePickerCustom fx:id="fxLastData" /></center>
+        </BorderPane>
     </HBox>
 
 </VBox>

@@ -11,6 +11,7 @@ import it.costelli.manager.util.FxUtils;
 import it.costelli.manager.util.StrUtils;
 import it.costelli.manager.view.components.*;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,13 +22,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +48,7 @@ public class TestSheetController implements Initializable {
 
 	private static final SimpleLog logger = LogService.getLogger(TestSheetController.class);
 
-
-	@FXML private VBox billContainer;
+	@FXML private VBox container;
 
 	// Row 0
 	@FXML private LabelTextField fxFoglioCollaudoNum;
@@ -144,29 +149,73 @@ public class TestSheetController implements Initializable {
 	public CheckBoxCustom fxFinituraCustom;
 	public BoxEsito fxFinituraEsito;
 	public BoxOsservazioni fxFinituraOsserv;
-	
+	// Row 15
+	public BoxEsito fxPuliziaSerbatoioEsito;
+	public BoxOsservazioni fxPuliziaSerbatoioOsserv;
+	// Row 16
+	public LabelTextField fxBobineV;
+	public LabelTextField fxBobineHz;
+	public LabelTextField fxBobineVdc;
+	public BoxEsito fxBobineEsito;
+	public BoxOsservazioni fxBobineOsserv;
+	// Row 17
+	public BoxEsito fxMotoriEsito;
+	public BoxOsservazioni fxMotoriOsserv;
+	// Row 18
+	public CheckBoxCustom fxCertificatiMotoriElettrici;
+	public CheckBoxCustom fxCertificatiPompe;
+	public CheckBoxCustom fxCertificatiAccumulatori;
+	public CheckBoxCustom fxCertificatiCustom;
+	public LabelTextField fxCertificatiCustomTypeText;
+	public BoxEsito fxCertificatiEsito;
+	public BoxOsservazioni fxCertificatiOsserv;
+	// Row 19
+	public BoxEsito fxRumoreEsito;
+	public BoxOsservazioni fxRumoreOsserv;
+	// Row 21
+	public LabelTextField fxLastMontatoDa;
+	public LabelTextField fxLastCollaudatore;
+	public LabelTextField fxLastResponsabile;
+	public DatePickerCustom fxLastData;
+
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		TestSheetResizer.resizeBillView(billContainer, 950);
-		manageSpecificResize();
+		manageSpecificBindings();
+		TestSheetResizer.resizeBillView(container, 950);
 		manageFieldBindings();
 	}
 
-	private void manageSpecificResize() {
+	private void manageSpecificBindings() {
 		// POMPE - row 5
 		Pane row5 = (Pane) fxPompeCustom.getParent();
 		fxPompeCustom.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> row5.getWidth() * 0.4, row5.widthProperty()));
-//		((VBox) fxPompeCustom.getLeft()).setPadding(new Insets(0));
-		
+		fxPompeCustomTypeText.disableProperty().bind(Bindings.createBooleanBinding(
+			() -> !fxPompeCustom.isSelected() || StringUtils.isBlank(fxPompeCustom.getText()),
+			fxPompeCustom.getCheckBox().selectedProperty(),
+			fxPompeCustom.getTextField().textProperty()
+		));
+
 		// TENUTE - row 12
 		fxTenuteTappi.prefHeightProperty().bind(fxTenuteSerbatoio.heightProperty());
 		fxTenuteBlocchi.prefHeightProperty().bind(fxTenuteRaccordi.heightProperty());
 		fxTenuteOblo.prefHeightProperty().bind(fxTenuteSerbatoio.heightProperty());
 		fxTenuteValvole.prefHeightProperty().bind(fxTenuteRaccordi.heightProperty());
+
+		// BOBINE 16
+		DoubleBinding halfSizeBind = Bindings.createDoubleBinding(() -> fxBobineVdc.getWidth() / 2.0, fxBobineVdc.widthProperty());
+		fxBobineV.prefWidthProperty().bind(halfSizeBind);
+		fxBobineHz.prefWidthProperty().bind(halfSizeBind);
+
+		// CERTIFICATI 18
+		fxCertificatiCustomTypeText.disableProperty().bind(Bindings.createBooleanBinding(
+			() -> !fxCertificatiCustom.isSelected() || StringUtils.isBlank(fxCertificatiCustom.getText()),
+			fxCertificatiCustom.getCheckBox().selectedProperty(),
+			fxCertificatiCustom.getTextField().textProperty()
+		));
 	}
 
 	private void manageFieldBindings() {
@@ -207,7 +256,7 @@ public class TestSheetController implements Initializable {
 		addEditableText(POMPE_PALETTE_TEXT, fxPompePalette.getTextField());
 		addEditableCheckBox(POMPE_PISTONI, fxPompePistoni.getCheckBox());
 		addEditableText(POMPE_PISTONI_TEXT, fxPompePistoni.getTextField());
-		addEditableCheckBox(POMPE_CUSTOM, fxPompeCustom.getCheckBox(), fxPompeCustomTypeText.getTextField());
+		addEditableCheckBox(POMPE_CUSTOM, fxPompeCustom.getCheckBox());
 		addEditableText(POMPE_CUSTOM_TYPE, fxPompeCustom.getTextField());
 		addEditableText(POMPE_CUSTOM_TYPE_TEXT, fxPompeCustomTypeText.getTextField());
 		addEditableCheckBox(POMPE_PORTATA_MIN, fxPompePortataMin.getCheckBox());
@@ -306,6 +355,44 @@ public class TestSheetController implements Initializable {
 		addEditableText(FINITURA_CUSTOM_TEXT, fxFinituraCustom.getTextField());
 		addEditableCheckBox(FINITURA_ESITO, fxFinituraEsito.getCheckBox(), fxFinituraOsserv.getTextArea());
 		addEditableText(FINITURA_OSSERV, fxFinituraOsserv.getTextArea());
+
+		// Row 15
+		addEditableCheckBox(PULIZIA_SERBATOIO_ESITO, fxPuliziaSerbatoioEsito.getCheckBox(), fxPuliziaSerbatoioOsserv.getTextArea());
+		addEditableText(PULIZIA_SERBATOIO_OSSERV, fxPuliziaSerbatoioOsserv.getTextArea());
+
+		// Row 16
+		addEditableText(BOBINE_V_TEXT, fxBobineV.getTextField());
+		addEditableText(BOBINE_HZ_TEXT, fxBobineHz.getTextField());
+		addEditableText(BOBINE_VDC_TEXT, fxBobineVdc.getTextField());
+		addEditableCheckBox(BOBINE_ESITO, fxBobineEsito.getCheckBox(), fxBobineOsserv.getTextArea());
+		addEditableText(BOBINE_OSSERV, fxBobineOsserv.getTextArea());
+
+		// Row 17
+		// review missing fields
+		addEditableCheckBox(MOTORI_ESITO, fxMotoriEsito.getCheckBox(), fxMotoriOsserv.getTextArea());
+		addEditableText(MOTORI_OSSERV, fxMotoriOsserv.getTextArea());
+
+		// Row 18
+		addEditableCheckBox(CERTIFICATI_MOTORI_ELETTRICI, fxCertificatiMotoriElettrici.getCheckBox(), fxCertificatiMotoriElettrici.getTextField());
+		addEditableText(CERTIFICATI_MOTORI_ELETTRICI_TEXT, fxCertificatiMotoriElettrici.getTextField());
+		addEditableCheckBox(CERTIFICATI_POMPE, fxCertificatiPompe.getCheckBox(), fxCertificatiPompe.getTextField());
+		addEditableText(CERTIFICATI_POMPE_TEXT, fxCertificatiPompe.getTextField());
+		addEditableCheckBox(CERTIFICATI_ACCUMULATORI, fxCertificatiAccumulatori.getCheckBox(), fxCertificatiAccumulatori.getTextField());
+		addEditableText(CERTIFICATI_ACCUMULATORI_TEXT, fxCertificatiAccumulatori.getTextField());
+		addEditableCheckBox(CERTIFICATI_CUSTOM, fxCertificatiCustom.getCheckBox(), fxCertificatiCustom.getTextField());
+		addEditableText(CERTIFICATI_CUSTOM_TYPE, fxCertificatiCustom.getTextField());
+		addEditableText(CERTIFICATI_CUSTOM_TYPE_TEXT, fxCertificatiCustomTypeText.getTextField());  // disabling managed in specific bindings
+		addEditableCheckBox(CERTIFICATI_ESITO, fxCertificatiEsito.getCheckBox(), fxCertificatiOsserv.getTextArea());
+		addEditableText(CERTIFICATI_OSSERV, fxCertificatiOsserv.getTextArea());
+
+		// Row 19
+		// review missing fields
+
+		// Row 21
+		addEditableText(LAST_MONTATO_DA, fxLastMontatoDa.getTextField());
+		addEditableText(LAST_COLLAUDATORE, fxLastCollaudatore.getTextField());
+		addEditableText(LAST_RESPONSABILE, fxLastResponsabile.getTextField());
+		addEditableDatePicker(LAST_DATA, fxLastData);
 	}
 	private void addEditableText(FieldType fieldType, TextInputControl textInput) {
 		fieldsMap.put(fieldType, new EditableText(textInput));
@@ -316,14 +403,17 @@ public class TestSheetController implements Initializable {
 	private void addEditableComboUnity(FieldType fieldType, ComboBox<EnumUnity> comboUnity) {
 		fieldsMap.put(fieldType, new EditableComboUnity(comboUnity));
 	}
+	private void addEditableDatePicker(FieldType fieldType, DatePicker datePicker) {
+		fieldsMap.put(fieldType, new EditableDatePicker(datePicker));
+	}
 
 	@FXML
 	private void actionCreatePDF(ActionEvent event) throws IOException, DocumentException {
-//		FileChooser fc = new FileChooser();
-//		fc.setTitle("Select output path");
-//		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-//		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
-		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Select output path");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
+//		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
 		if(outFile != null) {
 			Map<FieldType, String> pdfData = new HashMap<>();
 			fieldsMap.forEach((ftype, efield) -> pdfData.put(ftype, efield.toStringField()));
@@ -332,7 +422,11 @@ public class TestSheetController implements Initializable {
 		}
 	}
 
-	private abstract class EditableField<N extends Node, P extends Property> {
+	public Map<FieldType, EditableField> getFieldsMap() {
+		return fieldsMap;
+	}
+
+	public abstract class EditableField<N extends Node, P extends Property> {
 		private N node;
 		private P property;
 
@@ -365,10 +459,10 @@ public class TestSheetController implements Initializable {
 				}
 			});
 
-			//review to remove
-			String defval = "fede";
-			getNode().setText(defval);
-			getProperty().setValue(defval);
+//			//review to remove
+//			String defval = "fede";
+//			getNode().setText(defval);
+//			getProperty().setValue(defval);
 		}
 
 		@Override
@@ -382,12 +476,12 @@ public class TestSheetController implements Initializable {
 			getProperty().bind(getNode().selectedProperty());
 			Arrays.asList(disableNodes).forEach(n -> n.disableProperty().bind(Bindings.createBooleanBinding(() -> !getProperty().getValue(), getProperty())));
 			// review to delete
-			getNode().setSelected(true);
+//			getNode().setSelected(true);
 		}
 
 		@Override
 		public String toStringField() {
-			return getNode().isSelected() ? "X" : "";
+			return getProperty().getValue() ? "X" : "";
 		}
 	}
 	private class EditableComboUnity extends EditableField<ComboBox<EnumUnity>,SimpleObjectProperty<EnumUnity>> {
@@ -398,7 +492,19 @@ public class TestSheetController implements Initializable {
 
 		@Override
 		public String toStringField() {
-			return getNode().getSelectionModel().getSelectedItem().getLabel();
+			return getProperty().getValue().getLabel();
+		}
+	}
+	private class EditableDatePicker extends EditableField<DatePicker,SimpleObjectProperty<LocalDate>> {
+		EditableDatePicker(DatePicker node) {
+			super(node, new SimpleObjectProperty<>());
+			getNode().valueProperty().addListener((obs,old,nez) -> getProperty().setValue(nez));
+			getProperty().setValue(getNode().getValue());
+		}
+
+		@Override
+		public String toStringField() {
+			return getProperty().getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		}
 	}
 }
