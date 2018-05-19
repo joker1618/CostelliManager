@@ -1,5 +1,6 @@
 #container {
     -fx-spacing: 10;
+    -fx-padding: 10;
 }
 
 .labelLittle{

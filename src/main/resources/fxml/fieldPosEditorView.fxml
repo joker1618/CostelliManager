@@ -45,7 +45,7 @@
     </HBox>
 
     <HBox styleClass="hbox">
-        <Button fx:id="btnPrintPDF" text="PRINT PDF" onAction="#actionPrintPDF" />
+        <Button fx:id="btnPrintPDF" text="SCRIVI SU PDF" onAction="#actionPrintPDF" />
     </HBox>
 
     <BorderPane styleClass="borderPane">
