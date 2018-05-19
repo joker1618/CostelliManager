@@ -16,26 +16,28 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static it.costelli.manager.model.FieldType.*;
 
@@ -47,7 +49,7 @@ public class TestSheetController implements Initializable {
 	private static final SimpleLog logger = LogService.getLogger(TestSheetController.class);
 
 	@FXML private ScrollPane scrollPaneContainer;
-	@FXML private VBox boxContainer;
+	@FXML private VBox sheetBox;
 
 	// Row 0
 	@FXML private LabelTextField fxFoglioCollaudoNum;
@@ -187,7 +189,7 @@ public class TestSheetController implements Initializable {
 
 		manageSpecificBindings();
 
-		TestSheetResizer.resizeBillView(boxContainer, sheetWidth);
+		TestSheetResizer.resizeBillView(sheetBox, sheetWidth);
 
 		scrollPaneContainer.setPadding(new Insets(2.0));
 		scrollPaneContainer.setPrefWidth(sheetWidth + 20.0);
@@ -420,16 +422,38 @@ public class TestSheetController implements Initializable {
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
 		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
 //		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
-		if(outFile != null) {
+		if(outFile == null) {
+			return;
+		}
+
+		GridPane gridPane = new GridPane();
+
+		// Combo font type
+		ComboBox<PDFFont> comboFont = new ComboBox<>(FXCollections.observableArrayList(PDFFont.values()));
+		comboFont.getSelectionModel().select(PDFFont.HELVETICA);
+		gridPane.add(new Label("Tipo font:"), 0, 0);
+		gridPane.add(comboFont, 1, 0);
+
+		// Combo font size
+		List<Integer> sizes = Stream.iterate(4, integer -> integer + 1).limit(40).collect(Collectors.toList());
+		ComboBox<Integer> comboSize = new ComboBox<>(FXCollections.observableArrayList(sizes));
+		comboSize.getSelectionModel().select((Integer)10);
+		gridPane.add(new Label("Font size:"), 0, 1);
+		gridPane.add(comboSize, 1, 1);
+
+		// Create dialog
+		Dialog<Pair<PDFFont,Integer>> dlg = new Dialog<>();
+		dlg.getDialogPane().setContent(gridPane);
+		dlg.getDialogPane().getButtonTypes().add(new ButtonType("CREATE PDF", ButtonBar.ButtonData.OK_DONE));
+		dlg.setResultConverter(param -> param != null && param.getButtonData() == ButtonBar.ButtonData.OK_DONE ? Pair.of(comboFont.getSelectionModel().getSelectedItem(), comboSize.getSelectionModel().getSelectedItem()) : null);
+		Optional<Pair<PDFFont, Integer>> resp = dlg.showAndWait();
+
+		if (resp.isPresent()) {
 			Map<FieldType, String> pdfData = new HashMap<>();
 			fieldsMap.forEach((ftype, efield) -> pdfData.put(ftype, efield.toStringField()));
-			PdfFacade.fillPDFFields(outFile.toPath(), PDFFont.HELVETICA, 10, pdfData);
+			PdfFacade.fillPDFFields(outFile.toPath(), resp.get().getKey(), resp.get().getValue(), pdfData);
 			FxUtils.showAlertInfo("Nuovo foglio di collaudo creato", "PDF path: %s", outFile);
 		}
-	}
-
-	public Map<FieldType, EditableField> getFieldsMap() {
-		return fieldsMap;
 	}
 
 	public abstract class EditableField<N extends Node, P extends Property> {

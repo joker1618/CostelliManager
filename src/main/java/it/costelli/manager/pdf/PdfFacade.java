@@ -10,7 +10,10 @@ import it.costelli.manager.logger.LogService;
 import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
-import it.costelli.manager.util.*;
+import it.costelli.manager.util.Converter;
+import it.costelli.manager.util.FileUtils;
+import it.costelli.manager.util.StrUtils;
+import it.costelli.manager.util.StuffUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -18,7 +21,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static it.costelli.manager.util.StrUtils.strf;

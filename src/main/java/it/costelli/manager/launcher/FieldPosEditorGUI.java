@@ -9,7 +9,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.scenicview.ScenicView;
 
@@ -34,14 +33,9 @@ public class FieldPosEditorGUI extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fieldPosEditorView.fxml"));
-		VBox editorPosPane = fxmlLoader.load();
+		BorderPane editorPosPane = fxmlLoader.load();
 
-		ScrollPane imagePane = createImagePane();
-
-		BorderPane borderPane = new BorderPane(imagePane, null, editorPosPane, null, null);
-
-		Scene scene = new Scene(borderPane);
-//		Scene scene = new Scene(editorPosPane);
+		Scene scene = new Scene(editorPosPane);
 		stage.setScene(scene);
 		stage.show();
 

@@ -5,22 +5,17 @@ import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.view.components.BoxOsservazioni;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static it.costelli.manager.util.StuffUtils.display;
 
 /**
  * Created by f.barbano on 18/05/2018.

@@ -17,6 +17,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -40,8 +43,11 @@ public class FieldPosEditorController implements Initializable {
 
 	private static final SimpleLog logger = LogService.getLogger(FieldPosEditorController.class);
 
-	@FXML
-	private VBox container;
+	@FXML private BorderPane container;
+
+	@FXML private ImageView fxImagePDF;
+
+	@FXML private VBox editorBox;
 
 	@FXML private TextField fxText;
 	@FXML private ComboBox<PDFFont> fxComboFontType;
@@ -57,9 +63,16 @@ public class FieldPosEditorController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initImageView(900);
 		initCombos();
 		initGridPaneXY();
 		initBindings();
+	}
+	private void initImageView(double imageWidth) {
+		Image image = fxImagePDF.getImage();
+		double rel = image.getHeight() / image.getWidth();
+		fxImagePDF.setFitWidth(imageWidth);
+		fxImagePDF.setFitHeight(imageWidth*rel);
 	}
 	private void initCombos() {
 		// Combo font type
@@ -118,10 +131,14 @@ public class FieldPosEditorController implements Initializable {
 			() -> StringUtils.isAnyBlank(fxText.getText(), fxPosX.getText(), fxPosY.getText()),
 			fxText.textProperty(), fxPosX.textProperty(), fxPosY.textProperty()
 		));
-
+		// Size binding
+		editorBox.prefWidthProperty().bind(Bindings.createDoubleBinding(
+			() -> container.getWidth() - fxImagePDF.getFitWidth(),
+			container.widthProperty(), fxImagePDF.fitWidthProperty()
+		));
 	}
 
-	@FXML private void actionPrintPDF(ActionEvent event) throws IOException, DocumentException {
+	@FXML private void actionPrintOnPDF(ActionEvent event) throws IOException, DocumentException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select output path");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));

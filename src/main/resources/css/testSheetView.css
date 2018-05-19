@@ -1,4 +1,4 @@
-#boxContainer {
+#sheetBox {
     -fx-background-color: #ffffcc;
     -fx-border-color: black;
     -fx-border-width: 1 0 0 1;
@@ -39,3 +39,13 @@
 
 .lblUnderline .label  { -fx-underline: true; }
 .label.lblUnderline  { -fx-underline: true; }
+
+.rightBox { -fx-padding: 50; }
+.rightBox .button {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: CENTER;
+    -fx-pref-width: 150;
+    -fx-pref-height: 100;
+    -fx-wrap-text: true;
+}

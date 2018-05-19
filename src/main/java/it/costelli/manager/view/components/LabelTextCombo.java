@@ -3,17 +3,16 @@ package it.costelli.manager.view.components;
 import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.PressureUnity;
 import it.costelli.manager.model.TimeUnity;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by f.barbano on 16/05/2018.
