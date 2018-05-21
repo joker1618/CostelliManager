@@ -13,6 +13,7 @@ public class BoxOsservazioni extends VBox {
 	public BoxOsservazioni() {
 		super();
 		this.textArea = new TextArea("");
+		this.textArea.setWrapText(true);
 		getChildren().add(textArea);
 	}
 

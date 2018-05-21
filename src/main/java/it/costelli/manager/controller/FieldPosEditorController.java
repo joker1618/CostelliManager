@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static it.costelli.manager.util.StrUtils.strf;
+import static it.costelli.manager.util.StuffUtils.display;
 
 /**
  * Created by f.barbano on 17/05/2018.

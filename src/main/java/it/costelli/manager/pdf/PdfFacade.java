@@ -1,10 +1,7 @@
 package it.costelli.manager.pdf;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import it.costelli.manager.config.Conf;
 import it.costelli.manager.logger.LogService;
 import it.costelli.manager.logger.SimpleLog;
@@ -97,11 +94,11 @@ public class PdfFacade {
 			for(Map.Entry<FieldType,String> entry : pdfData.entrySet()) {
 				PdfField fpos = getFieldPosition(entry.getKey());
 				if(StringUtils.isNotBlank(entry.getValue())) {
-					over.beginText();
-					over.setFontAndSize(bf, fontSize);
-					over.setTextMatrix(fpos.getX(), fpos.getY());
-					over.showText(entry.getValue());
-					over.endText();
+					if(entry.getKey().isTextArea()) {
+						writeWrappedText(over, bf, fontSize, fpos, entry.getValue());
+					} else {
+						writeInlineText(over, bf, fontSize, fpos, entry.getValue());
+					}
 				}
 			}
 
@@ -128,12 +125,7 @@ public class PdfFacade {
 
 			// Get first page
 			PdfContentByte over = stamper.getOverContent(1);
-
-			over.beginText();
-			over.setFontAndSize(bf, fontSize);
-			over.setTextMatrix(pdfData.getKey().getX(), pdfData.getKey().getY());
-			over.showText(pdfData.getValue());
-			over.endText();
+			writeInlineText(over, bf, fontSize, pdfData.getKey(), pdfData.getValue());
 
 			logger.info(strf("Created new PDF at '%s'", outPath));
 
@@ -143,5 +135,20 @@ public class PdfFacade {
 		}
 	}
 
+	private static void writeInlineText(PdfContentByte over, BaseFont baseFont, int fontSize, PdfField pdfField, String text) {
+		over.beginText();
+		over.setFontAndSize(baseFont, fontSize);
+		over.setTextMatrix(pdfField.getX(), pdfField.getY());
+		over.showText(text);
+		over.endText();
+	}
+
+	private static void writeWrappedText(PdfContentByte over, BaseFont baseFont, int fontSize, PdfField pdfField, String text) throws DocumentException {
+		ColumnText ct = new ColumnText(over);
+		Phrase phrase = new Phrase(text, new Font(baseFont, fontSize));
+		ct.setSimpleColumn(phrase, pdfField.getX(), pdfField.getY(), pdfField.getEndX(), pdfField.getEndY(), fontSize, Element.ALIGN_LEFT);
+		ct.setText(phrase);
+		ct.go();
+	}
 
 }
