@@ -46,11 +46,7 @@ public class PdfFacade {
 				if (gnum != null) {
 					FieldType ft = FieldType.getByGrossoNum(gnum);
 					if (ft != null) {
-						Double x = Converter.stringToDouble(split[1]);
-						Double y = Converter.stringToDouble(split[2]);
-						Double endX = Converter.stringToDouble(split[3]);
-						Double endY = Converter.stringToDouble(split[4]);
-						fieldMap.put(ft, new PdfField(x, y, endX, endY));
+						fieldMap.put(ft, new PdfField(split[1], split[2], split[3], split[4], split[5]));
 					} else {
 						logger.warning(strf("File '%s' not found. Unable to read PDF fields positions.", Conf.RESOURCE_FIELDS_POS));
 					}
@@ -66,12 +62,13 @@ public class PdfFacade {
 
 		List<String> lines = fieldMap.entrySet().stream()
 			.sorted(Comparator.comparing(e -> e.getKey().grossoNum()))
-			.map(e -> strf("%d;%s;%s;%s;%s",
+			.map(e -> strf("%d;%s;%s;%s;%s;%d",
 				e.getKey().grossoNum(),
 				StuffUtils.viewDouble(e.getValue().getX()),
 				StuffUtils.viewDouble(e.getValue().getY()),
 				StuffUtils.viewDouble(e.getValue().getEndX()),
-				StuffUtils.viewDouble(e.getValue().getEndY())
+				StuffUtils.viewDouble(e.getValue().getEndY()),
+				e.getValue().getAlignment().getNum()
 			)).collect(Collectors.toList());
 
 		FileUtils.writeFile(Conf.RESOURCE_FIELDS_POS, lines, true);
@@ -138,17 +135,25 @@ public class PdfFacade {
 	}
 
 	private static void writeInlineText(PdfContentByte over, BaseFont baseFont, int fontSize, PdfField pdfField, String text) {
+		float x;
+		if(pdfField.getAlignment() == PDFAlignment.RIGHT) {
+			x = pdfField.getEndX();
+		} else if(pdfField.getAlignment() == PDFAlignment.CENTER) {
+			x = pdfField.getX() + pdfField.getWidth() / 2;
+		} else {
+			x = pdfField.getX();
+		}
+
 		over.beginText();
 		over.setFontAndSize(baseFont, fontSize);
-		over.setTextMatrix(pdfField.getX(), pdfField.getY());
-		over.showText(text);
+		over.showTextAligned(pdfField.getAlignment().getNum(), text, x, pdfField.getY(), 0);
 		over.endText();
 	}
 
 	private static void writeWrappedText(PdfContentByte over, BaseFont baseFont, int fontSize, PdfField pdfField, String text) throws DocumentException {
 		ColumnText ct = new ColumnText(over);
 		Phrase phrase = new Phrase(text, new Font(baseFont, fontSize));
-		ct.setSimpleColumn(phrase, pdfField.getX(), pdfField.getY(), pdfField.getEndX(), pdfField.getEndY(), fontSize, Element.ALIGN_LEFT);
+		ct.setSimpleColumn(phrase, pdfField.getX(), pdfField.getY(), pdfField.getEndX(), pdfField.getEndY(), fontSize, pdfField.getAlignment().getNum());
 		ct.setText(phrase);
 		ct.go();
 	}

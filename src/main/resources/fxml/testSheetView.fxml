@@ -37,8 +37,7 @@
 
                 <!-- Row 1 -->
                 <HBox styleClass="boxRow">
-                    <!--<VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>-->
-                    <VBox styleClass="boxElem, lblBold, centered"><Button text="print pdf" onAction="#actionCreatePDF"/></VBox>
+                    <VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>
                     <VBox styleClass="boxElem, lblBold, centered"><Label text="ESITO"/></VBox>
                     <VBox styleClass="boxElem, lblBold, centered"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
                 </HBox>

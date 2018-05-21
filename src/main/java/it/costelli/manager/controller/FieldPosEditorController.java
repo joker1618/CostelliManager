@@ -1,10 +1,12 @@
 package it.costelli.manager.controller;
 
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import it.costelli.manager.logger.LogService;
 import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
+import it.costelli.manager.pdf.PDFAlignment;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
 import it.costelli.manager.util.*;
@@ -53,6 +55,7 @@ public class FieldPosEditorController implements Initializable {
 	@FXML private TextField fxText;
 	@FXML private ComboBox<PDFFont> fxComboFontType;
 	@FXML private ComboBox<Integer> fxComboFontSize;
+	@FXML private ComboBox<PDFAlignment> fxComboAlign;
 	@FXML private TextField fxPosX;
 	@FXML private TextField fxPosY;
 	@FXML private TextField fxPosEndX;
@@ -86,16 +89,20 @@ public class FieldPosEditorController implements Initializable {
 		List<Integer> sizeList = Stream.generate(aint::getAndIncrement).limit(25).collect(Collectors.toList());
 		fxComboFontSize.setItems(FXCollections.observableArrayList(sizeList));
 		fxComboFontSize.getSelectionModel().select((Integer)10);
+		// Combo align
+		fxComboAlign.setItems(FXCollections.observableArrayList(PDFAlignment.values()));
+		fxComboAlign.getSelectionModel().select(0);
 	}
 	private void initGridPaneXY() {
 		try {
 			// Add header
 			panePosList.add(new Label("#"), 0, 0);
-			panePosList.add(new Label("X"), 2, 0);
-			panePosList.add(new Label("Y"), 3, 0);
-			panePosList.add(new Label("END X"), 4, 0);
-			panePosList.add(new Label("ENX Y"), 5, 0);
-			panePosList.add(new Label("NOME CAMPO"), 7, 0);
+			panePosList.add(new Label("ALIGN"), 1, 0);
+			panePosList.add(new Label("X"), 3, 0);
+			panePosList.add(new Label("Y"), 4, 0);
+			panePosList.add(new Label("END X"), 5, 0);
+			panePosList.add(new Label("ENX Y"), 6, 0);
+			panePosList.add(new Label("NOME CAMPO"), 8, 0);
 
 			// Add content
 			int rowNum = 1;
@@ -105,16 +112,17 @@ public class FieldPosEditorController implements Initializable {
 				posRowList.add(posRow);
 
 				panePosList.add(new Label(ft.grossoNum() + ""), 0, rowNum);
-				panePosList.add(posRow.btnUpdate, 1, rowNum);
-				panePosList.add(posRow.xpos, 2, rowNum);
-				panePosList.add(posRow.ypos, 3, rowNum);
-				panePosList.add(posRow.endXpos, 4, rowNum);
-				panePosList.add(posRow.endYpos, 5, rowNum);
-				panePosList.add(posRow.btnUse, 6, rowNum);
+				panePosList.add(posRow.align, 1, rowNum);
+				panePosList.add(posRow.btnUpdate, 2, rowNum);
+				panePosList.add(posRow.xpos, 3, rowNum);
+				panePosList.add(posRow.ypos, 4, rowNum);
+				panePosList.add(posRow.endXpos, 5, rowNum);
+				panePosList.add(posRow.endYpos, 6, rowNum);
+				panePosList.add(posRow.btnUse, 7, rowNum);
 
 				Label nameLabel = new Label(ft.name());
 				nameLabel.getStyleClass().add("labelLittle");
-				panePosList.add(nameLabel, 7, rowNum);
+				panePosList.add(nameLabel, 8, rowNum);
 
 				rowNum++;
 			}
@@ -160,7 +168,8 @@ public class FieldPosEditorController implements Initializable {
 		if(outFile != null) {
 			PDFFont fontType = fxComboFontType.getSelectionModel().getSelectedItem();
 			Integer fontSize = fxComboFontSize.getSelectionModel().getSelectedItem();
-			PdfField pdfField = new PdfField(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText());
+			PDFAlignment align = fxComboAlign.getSelectionModel().getSelectedItem();
+			PdfField pdfField = new PdfField(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText(), align);
 			PdfFacade.writOnPDF(outFile.toPath(), fontType, fontSize, Pair.of(pdfField, fxText.getText()));
 			FxUtils.showAlertInfo("Nuovo PDF creato", "Path: %s", outFile.toPath().toAbsolutePath());
 		}
@@ -189,6 +198,7 @@ public class FieldPosEditorController implements Initializable {
 		TextField xpos, ypos, endXpos, endYpos;
 		Button btnUse, btnUpdate;
 		Pair<PdfField, PdfField> pair;
+		ComboBox<PDFAlignment> align;
 
 		PosRow(FieldType fieldType, PdfField pdfField) {
 			this.fieldType = fieldType;
@@ -199,6 +209,10 @@ public class FieldPosEditorController implements Initializable {
 
 			ftName = new Label(fieldType.name());
 			ftName.getStyleClass().add("labelLittle");
+
+			align = new ComboBox<>(FXCollections.observableArrayList(PDFAlignment.values()));
+			align.getSelectionModel().select(pdfField.getAlignment());
+			pair.getValue().alignmentProperty().bind(align.getSelectionModel().selectedItemProperty());
 
 			xpos = new TextField();
 			xpos.getStyleClass().add("numField");
@@ -220,7 +234,7 @@ public class FieldPosEditorController implements Initializable {
 			endYpos.setEditable(false);
 			endYpos.textProperty().bind(Bindings.createStringBinding(() -> StuffUtils.viewDouble(pair.getValue().getEndY()), pair.getValue().endYProperty()));
 
-			btnUse = new Button("USA");
+			btnUse = new Button("USA [X,Y]");
 			btnUse.setOnAction(e -> {
 				fxPosX.setText(pair.getValue().getX()+"");
 				fxPosY.setText(pair.getValue().getY()+"");
@@ -228,7 +242,7 @@ public class FieldPosEditorController implements Initializable {
 				fxPosEndY.setText(pair.getValue().getEndY()+"");
 			});
 
-			btnUpdate = new Button("AGGIORNA");
+			btnUpdate = new Button("AGGIORNA [X,Y]");
 			btnUpdate.disableProperty().bind(Bindings.createBooleanBinding(
 				() -> StringUtils.isAnyBlank(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText()),
 				fxPosX.textProperty(), fxPosY.textProperty(), fxPosEndX.textProperty(), fxPosEndY.textProperty()

@@ -34,6 +34,11 @@
             </HBox>
 
             <HBox styleClass="hbox">
+                <Label text="Align:"/>
+                <ComboBox fx:id="fxComboAlign" />
+            </HBox>
+
+            <HBox styleClass="hbox">
                 <HBox spacing="5">
                     <Label text="x:"/>
                     <TextField fx:id="fxPosX" styleClass="numField"/>
