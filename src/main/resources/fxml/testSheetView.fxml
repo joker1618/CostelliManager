@@ -324,7 +324,7 @@
                                 </VBox>
                             </left>
                             <center>
-                                <BorderPane>
+                                <BorderPane minHeight="-Infinity" maxHeight="-Infinity">
                                     <top>
                                         <HBox styleClass="boxSpaced10" style="-fx-padding: 0 0 10 0">
                                             <LabelTextField fx:id="fxBobineV" labelField="V."/>
