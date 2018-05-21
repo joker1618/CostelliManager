@@ -68,7 +68,7 @@ public class GUILauncher extends Application {
 		MenuItem editorItem = new MenuItem("Editor posizione campi PDF");
 		editorItem.setOnAction(e -> mainPane.setCenter(editorPosPane));
 
-		Menu menu = new Menu("Scegli");
+		Menu menu = new Menu("Menu");
 		menu.getItems().addAll(sheetItem, editorItem);
 
 		return new MenuBar(menu);
