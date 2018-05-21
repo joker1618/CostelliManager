@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.scenicview.ScenicView;
+//import org.scenicview.ScenicView;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -50,9 +50,9 @@ public class GUILauncher extends Application {
 
 		stage.setMaximized(true);
 
-		if(scenicView) {
-			ScenicView.show(scene);
-		}
+//		if(scenicView) {
+//			ScenicView.show(scene);
+//		}
 
 	}
 

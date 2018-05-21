@@ -26,11 +26,11 @@
         </dependency>
 
         <!-- ScenicView: review to delete -->
-        <dependency>
-            <groupId>org</groupId>
-            <artifactId>scenicview</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org</groupId>-->
+            <!--<artifactId>scenicview</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
         
         <!-- TEST -->
         <dependency>
