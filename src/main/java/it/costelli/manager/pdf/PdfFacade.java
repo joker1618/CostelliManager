@@ -126,6 +126,8 @@ public class PdfFacade {
 			// Get first page
 			PdfContentByte over = stamper.getOverContent(1);
 			writeInlineText(over, bf, fontSize, pdfData.getKey(), pdfData.getValue());
+			over.rectangle(pdfData.getKey().getX(), pdfData.getKey().getY(), pdfData.getKey().getWidth(), pdfData.getKey().getHeight());
+			over.stroke();
 
 			logger.info(strf("Created new PDF at '%s'", outPath));
 

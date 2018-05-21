@@ -89,7 +89,16 @@ public class FieldPosEditorController implements Initializable {
 	}
 	private void initGridPaneXY() {
 		try {
-			int rowNum = 0;
+			// Add header
+			panePosList.add(new Label("#"), 0, 0);
+			panePosList.add(new Label("X"), 2, 0);
+			panePosList.add(new Label("Y"), 3, 0);
+			panePosList.add(new Label("END X"), 4, 0);
+			panePosList.add(new Label("ENX Y"), 5, 0);
+			panePosList.add(new Label("NOME CAMPO"), 7, 0);
+
+			// Add content
+			int rowNum = 1;
 			for (FieldType ft : FieldType.values()) {
 				PdfField pdfField = PdfFacade.getFieldPosition(ft);
 				PosRow posRow = new PosRow(ft, pdfField);

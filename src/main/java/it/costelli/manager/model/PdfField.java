@@ -86,6 +86,13 @@ public class PdfField {
 		this.endY.set(endY);
 	}
 
+	public float getWidth() {
+		return getEndX() - getX();
+	}
+	public float getHeight() {
+		return getEndY() - getY();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
