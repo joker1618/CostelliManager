@@ -1,6 +1,8 @@
 package it.costelli.manager.model;
 
+import it.costelli.manager.util.Converter;
 import javafx.beans.property.SimpleFloatProperty;
+import javafx.scene.control.TextField;
 
 /**
  * Created by f.barbano on 17/05/2018.
@@ -12,8 +14,11 @@ public class PdfField {
 	private SimpleFloatProperty endX;
 	private SimpleFloatProperty endY;
 
-	public PdfField(double x, double y) {
-		this(x, y, 0, 0);
+	public PdfField(String x, String y, String endX, String endY) {
+		this.x = new SimpleFloatProperty(Converter.stringToFloat(x));
+		this.y = new SimpleFloatProperty(Converter.stringToFloat(y));
+		this.endX = new SimpleFloatProperty(Converter.stringToFloat(endX));
+		this.endY = new SimpleFloatProperty(Converter.stringToFloat(endY));
 	}
 	public PdfField(double x, double y, double endX, double endY) {
 		this.x = new SimpleFloatProperty((float)x);

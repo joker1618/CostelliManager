@@ -42,6 +42,14 @@
                     <Label text="y:"/>
                     <TextField fx:id="fxPosY" styleClass="numField"/>
                 </HBox>
+                <HBox spacing="5">
+                    <Label text="endX:"/>
+                    <TextField fx:id="fxPosEndX" styleClass="numField"/>
+                </HBox>
+                <HBox spacing="5">
+                    <Label text="endY:"/>
+                    <TextField fx:id="fxPosEndY" styleClass="numField"/>
+                </HBox>
             </HBox>
 
             <HBox styleClass="hbox">

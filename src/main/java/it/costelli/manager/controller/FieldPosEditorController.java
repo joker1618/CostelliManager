@@ -54,6 +54,8 @@ public class FieldPosEditorController implements Initializable {
 	@FXML private ComboBox<Integer> fxComboFontSize;
 	@FXML private TextField fxPosX;
 	@FXML private TextField fxPosY;
+	@FXML private TextField fxPosEndX;
+	@FXML private TextField fxPosEndY;
 	@FXML private Button btnPrintPDF;
 
 	@FXML private GridPane panePosList;
@@ -96,11 +98,13 @@ public class FieldPosEditorController implements Initializable {
 				panePosList.add(posRow.btnUpdate, 1, rowNum);
 				panePosList.add(posRow.xpos, 2, rowNum);
 				panePosList.add(posRow.ypos, 3, rowNum);
-				panePosList.add(posRow.btnUse, 4, rowNum);
+				panePosList.add(posRow.endXpos, 4, rowNum);
+				panePosList.add(posRow.endYpos, 5, rowNum);
+				panePosList.add(posRow.btnUse, 6, rowNum);
 
 				Label nameLabel = new Label(ft.name());
 				nameLabel.getStyleClass().add("labelLittle");
-				panePosList.add(nameLabel, 5, rowNum);
+				panePosList.add(nameLabel, 7, rowNum);
 
 				rowNum++;
 			}
@@ -116,7 +120,7 @@ public class FieldPosEditorController implements Initializable {
 				fxText.setText(s);
 			}
 		});
-		Arrays.asList(fxPosX, fxPosY).forEach(
+		Arrays.asList(fxPosX, fxPosY, fxPosEndX, fxPosEndY).forEach(
 			tf -> tf.focusedProperty().addListener((obs,old,nez) -> {
 				if(!nez) {
 					String s = StrUtils.safeTrim(tf.getText());
@@ -128,8 +132,8 @@ public class FieldPosEditorController implements Initializable {
 
 		// Button 'btnPrintPDF' disable binding
 		btnPrintPDF.disableProperty().bind(Bindings.createBooleanBinding(
-			() -> StringUtils.isAnyBlank(fxText.getText(), fxPosX.getText(), fxPosY.getText()),
-			fxText.textProperty(), fxPosX.textProperty(), fxPosY.textProperty()
+			() -> StringUtils.isAnyBlank(fxText.getText(), fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText()),
+			fxText.textProperty(), fxPosX.textProperty(), fxPosY.textProperty(), fxPosEndX.textProperty(), fxPosEndY.textProperty()
 		));
 		// Size binding
 		editorBox.prefWidthProperty().bind(Bindings.createDoubleBinding(
@@ -146,7 +150,7 @@ public class FieldPosEditorController implements Initializable {
 		if(outFile != null) {
 			PDFFont fontType = fxComboFontType.getSelectionModel().getSelectedItem();
 			Integer fontSize = fxComboFontSize.getSelectionModel().getSelectedItem();
-			PdfField pdfField = new PdfField(Converter.stringToDouble(fxPosX.getText()), Converter.stringToDouble(fxPosY.getText()));
+			PdfField pdfField = new PdfField(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText());
 			PdfFacade.writOnPDF(outFile.toPath(), fontType, fontSize, Pair.of(pdfField, fxText.getText()));
 			FxUtils.showAlertInfo("Nuovo PDF creato", "Path: %s", outFile.toPath().toAbsolutePath());
 		}
@@ -172,7 +176,7 @@ public class FieldPosEditorController implements Initializable {
 	private class PosRow {
 		FieldType fieldType;
 		Label ftNum, ftName;
-		TextField xpos, ypos;
+		TextField xpos, ypos, endXpos, endYpos;
 		Button btnUse, btnUpdate;
 		Pair<PdfField, PdfField> pair;
 
@@ -196,20 +200,34 @@ public class FieldPosEditorController implements Initializable {
 			ypos.setEditable(false);
 			ypos.textProperty().bind(Bindings.createStringBinding(() -> StuffUtils.viewDouble(pair.getValue().getY()), pair.getValue().yProperty()));
 
+			endXpos = new TextField();
+			endXpos.getStyleClass().add("numField");
+			endXpos.setEditable(false);
+			endXpos.textProperty().bind(Bindings.createStringBinding(() -> StuffUtils.viewDouble(pair.getValue().getEndX()), pair.getValue().endXProperty()));
+
+			endYpos = new TextField();
+			endYpos.getStyleClass().add("numField");
+			endYpos.setEditable(false);
+			endYpos.textProperty().bind(Bindings.createStringBinding(() -> StuffUtils.viewDouble(pair.getValue().getEndY()), pair.getValue().endYProperty()));
+
 			btnUse = new Button("USA");
 			btnUse.setOnAction(e -> {
 				fxPosX.setText(pair.getValue().getX()+"");
 				fxPosY.setText(pair.getValue().getY()+"");
+				fxPosEndX.setText(pair.getValue().getEndX()+"");
+				fxPosEndY.setText(pair.getValue().getEndY()+"");
 			});
 
 			btnUpdate = new Button("AGGIORNA");
 			btnUpdate.disableProperty().bind(Bindings.createBooleanBinding(
-				() -> StringUtils.isAnyBlank(fxPosX.getText(), fxPosY.getText()),
-				fxPosX.textProperty(), fxPosY.textProperty()
+				() -> StringUtils.isAnyBlank(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText()),
+				fxPosX.textProperty(), fxPosY.textProperty(), fxPosEndX.textProperty(), fxPosEndY.textProperty()
 			));
 			btnUpdate.setOnAction(e -> {
 				pair.getValue().setX(Converter.stringToFloat(fxPosX.getText()));
 				pair.getValue().setY(Converter.stringToFloat(fxPosY.getText()));
+				pair.getValue().setEndX(Converter.stringToFloat(fxPosEndX.getText()));
+				pair.getValue().setEndY(Converter.stringToFloat(fxPosEndY.getText()));
 			});
 		}
 
