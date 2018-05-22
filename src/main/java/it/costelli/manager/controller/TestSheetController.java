@@ -355,10 +355,10 @@ public class TestSheetController implements Initializable {
 		addEditableCheckBox(TENUTE_BLOCCHI, fxTenuteBlocchi.getCheckBox());
 		addEditableCheckBox(TENUTE_OBLO, fxTenuteOblo.getCheckBox());
 		addEditableCheckBox(TENUTE_VALVOLE, fxTenuteValvole.getCheckBox());
-		addEditableCheckBox(TENUTE_SERBATOIO, fxTenuteSerbatoio.getCheckBox(), fxTenuteSerbatoio.getTextField());
-		addEditableText(TENUTE_SERBATOIO_TEXT, fxTenuteSerbatoio.getTextField());
-		addEditableCheckBox(TENUTE_RACCORDI, fxTenuteRaccordi.getCheckBox(), fxTenuteRaccordi.getTextField());
-		addEditableText(TENUTE_RACCORDI_TEXT, fxTenuteRaccordi.getTextField());
+		addEditableCheckBox(TENUTE_SERBATOIO, fxTenuteSerbatoio.getCheckBox());
+//		addEditableText(TENUTE_SERBATOIO_TEXT, fxTenuteSerbatoio.getTextField());
+		addEditableCheckBox(TENUTE_RACCORDI, fxTenuteRaccordi.getCheckBox());
+//		addEditableText(TENUTE_RACCORDI_TEXT, fxTenuteRaccordi.getTextField());
 		addEditableCheckBox(TENUTE_ESITO, fxTenuteEsito.getCheckBox(), fxTenuteOsserv.getTextArea());
 		addEditableText(TENUTE_OSSERV, fxTenuteOsserv.getTextArea());
 

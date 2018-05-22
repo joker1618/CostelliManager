@@ -251,8 +251,8 @@
                             </left>
                             <center>
                                 <VBox styleClass="boxSpaced10">
-                                    <CheckBoxCustom fx:id="fxTenuteSerbatoio" labelCheckBox="SERBATOIO" showTextField="true"/>
-                                    <CheckBoxCustom fx:id="fxTenuteRaccordi" labelCheckBox="RACCORDI" showTextField="true"/>
+                                    <CheckBoxCustom fx:id="fxTenuteSerbatoio" labelCheckBox="SERBATOIO"/>
+                                    <CheckBoxCustom fx:id="fxTenuteRaccordi" labelCheckBox="RACCORDI"/>
                                 </VBox>
                             </center>
                         </BorderPane>
@@ -330,7 +330,7 @@
                                             <LabelTextField fx:id="fxBobineHz" labelField="Hz."/>
                                         </HBox>
                                     </top>
-                                    <center><LabelTextField fx:id="fxBobineVdc" labelField="Vdc."/></center>
+                                    <center><LabelTextField fx:id="fxBobineVdc" labelField="Vdc." style="-fx-max-height:23"/></center>
                                 </BorderPane>
                             </center>
                         </BorderPane>
