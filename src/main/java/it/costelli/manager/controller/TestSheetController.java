@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static it.costelli.manager.model.FieldType.*;
-import static it.costelli.manager.util.StuffUtils.display;
 
 /**
  * Created by f.barbano on 18/05/2018.
@@ -146,39 +145,46 @@ public class TestSheetController implements Initializable {
 	@FXML private BoxEsito fxFluidoEsito;
 	@FXML private BoxOsservazioni fxFluidoOsserv;
 	// Row 14
-	public CheckBoxCustom fxFinituraStandard;
-	public CheckBoxCustom fxFinituraRal;
-	public CheckBoxCustom fxFinituraCustom;
-	public BoxEsito fxFinituraEsito;
-	public BoxOsservazioni fxFinituraOsserv;
+	@FXML private CheckBoxCustom fxFinituraStandard;
+	@FXML private CheckBoxCustom fxFinituraRal;
+	@FXML private CheckBoxCustom fxFinituraCustom;
+	@FXML private BoxEsito fxFinituraEsito;
+	@FXML private BoxOsservazioni fxFinituraOsserv;
 	// Row 15
-	public BoxEsito fxPuliziaSerbatoioEsito;
-	public BoxOsservazioni fxPuliziaSerbatoioOsserv;
+	@FXML private BoxEsito fxPuliziaSerbatoioEsito;
+	@FXML private BoxOsservazioni fxPuliziaSerbatoioOsserv;
 	// Row 16
-	public LabelTextField fxBobineV;
-	public LabelTextField fxBobineHz;
-	public LabelTextField fxBobineVdc;
-	public BoxEsito fxBobineEsito;
-	public BoxOsservazioni fxBobineOsserv;
+	@FXML private LabelTextField fxBobineV;
+	@FXML private LabelTextField fxBobineHz;
+	@FXML private LabelTextField fxBobineVdc;
+	@FXML private BoxEsito fxBobineEsito;
+	@FXML private BoxOsservazioni fxBobineOsserv;
 	// Row 17
-	public BoxEsito fxMotoriEsito;
-	public BoxOsservazioni fxMotoriOsserv;
+	@FXML private CheckBoxCustom fxMotoriHz;
+	@FXML private CheckBoxCustom fxMotoriCustom;
+	@FXML private LabelTextField fxMotoriKwText;
+	@FXML private LabelTextField fxMotoriCvText;
+	@FXML private CheckBoxCustom fxMotori2Poli;
+	@FXML private CheckBoxCustom fxMotori4Poli;
+	@FXML private CheckBoxCustom fxMotori6Poli;
+	@FXML private BoxEsito fxMotoriEsito;
+	@FXML private BoxOsservazioni fxMotoriOsserv;
 	// Row 18
-	public CheckBoxCustom fxCertificatiMotoriElettrici;
-	public CheckBoxCustom fxCertificatiPompe;
-	public CheckBoxCustom fxCertificatiAccumulatori;
-	public CheckBoxCustom fxCertificatiCustom;
-	public LabelTextField fxCertificatiCustomTypeText;
-	public BoxEsito fxCertificatiEsito;
-	public BoxOsservazioni fxCertificatiOsserv;
+	@FXML private CheckBoxCustom fxCertificatiMotoriElettrici;
+	@FXML private CheckBoxCustom fxCertificatiPompe;
+	@FXML private CheckBoxCustom fxCertificatiAccumulatori;
+	@FXML private CheckBoxCustom fxCertificatiCustom;
+	@FXML private LabelTextField fxCertificatiCustomTypeText;
+	@FXML private BoxEsito fxCertificatiEsito;
+	@FXML private BoxOsservazioni fxCertificatiOsserv;
 	// Row 19
-	public BoxEsito fxRumoreEsito;
-	public BoxOsservazioni fxRumoreOsserv;
+	@FXML private BoxEsito fxRumoreEsito;
+	@FXML private BoxOsservazioni fxRumoreOsserv;
 	// Row 21
-	public LabelTextField fxLastMontatoDa;
-	public LabelTextField fxLastCollaudatore;
-	public LabelTextField fxLastResponsabile;
-	public DatePickerCustom fxLastData;
+	@FXML private LabelTextField fxLastMontatoDa;
+	@FXML private LabelTextField fxLastCollaudatore;
+	@FXML private LabelTextField fxLastResponsabile;
+	@FXML private DatePickerCustom fxLastData;
 
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
@@ -377,7 +383,14 @@ public class TestSheetController implements Initializable {
 		addEditableText(BOBINE_OSSERV, fxBobineOsserv.getTextArea());
 
 		// Row 17
-		// review missing fields
+		addEditableCheckBox(MOTORI_HZ, fxMotoriHz.getCheckBox());
+		addEditableCheckBox(MOTORI_CUSTOM, fxMotoriCustom.getCheckBox());
+		addEditableText(MOTORI_CUSTOM_TEXT, fxMotoriCustom.getTextField());
+		addEditableText(MOTORI_KW_TEXT, fxMotoriKwText.getTextField());
+		addEditableText(MOTORI_CV_TEXT, fxMotoriCvText.getTextField());
+		addEditableCheckBox(MOTORI_2POLI, fxMotori2Poli.getCheckBox());
+		addEditableCheckBox(MOTORI_4POLI, fxMotori4Poli.getCheckBox());
+		addEditableCheckBox(MOTORI_6POLI, fxMotori6Poli.getCheckBox());
 		addEditableCheckBox(MOTORI_ESITO, fxMotoriEsito.getCheckBox(), fxMotoriOsserv.getTextArea());
 		addEditableText(MOTORI_OSSERV, fxMotoriOsserv.getTextArea());
 
@@ -489,11 +502,6 @@ public class TestSheetController implements Initializable {
 					}
 				}
 			});
-
-//			//review to remove
-//			String defval = "fede";
-//			getNode().setText(defval);
-//			getProperty().setValue(defval);
 		}
 
 		@Override
@@ -506,8 +514,6 @@ public class TestSheetController implements Initializable {
 			super(node, new SimpleBooleanProperty(false));
 			getProperty().bind(getNode().selectedProperty());
 			Arrays.asList(disableNodes).forEach(n -> n.disableProperty().bind(Bindings.createBooleanBinding(() -> !getProperty().getValue(), getProperty())));
-			// review to delete
-//			getNode().setSelected(true);
 		}
 
 		@Override

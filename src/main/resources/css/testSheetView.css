@@ -49,3 +49,5 @@
     -fx-pref-height: 100;
     -fx-wrap-text: true;
 }
+
+.shortTextField .text-field { -fx-max-width: 50; }

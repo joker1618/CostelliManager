@@ -323,7 +323,7 @@
                                 </VBox>
                             </left>
                             <center>
-                                <BorderPane minHeight="-Infinity" maxHeight="-Infinity">
+                                <BorderPane>
                                     <top>
                                         <HBox styleClass="boxSpaced10" style="-fx-padding: 0 0 10 0">
                                             <LabelTextField fx:id="fxBobineV" labelField="V."/>
@@ -343,9 +343,22 @@
                 <HBox styleClass="boxRow">
                     <VBox styleClass="boxElem">
                         <Label text="MOTORI" styleClass="lblBold"/>
-                        <VBox styleClass="lblFontSize11">
-
-                        </VBox>
+                        <GridPane styleClass="lblFontSize11" style="-fx-vgap:5; -fx-hgap:20">
+                            <CheckBoxCustom fx:id="fxMotoriHz" labelCheckBox="220/380V - 50 Hz"
+                                            GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <CheckBoxCustom fx:id="fxMotoriCustom" showTextField="true"
+                                            GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                            <LabelTextField fx:id="fxMotoriKwText" labelField="KW"
+                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <LabelTextField fx:id="fxMotoriCvText" labelField="CV"
+                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            <CheckBoxCustom fx:id="fxMotori2Poli" labelCheckBox="2 POLI"
+                                            GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                            <CheckBoxCustom fx:id="fxMotori4Poli" labelCheckBox="4 POLI"
+                                            GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                            <CheckBoxCustom fx:id="fxMotori6Poli" labelCheckBox="6 POLI"
+                                            GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                        </GridPane>
                     </VBox>
                     <BoxEsito styleClass="boxElem" fx:id="fxMotoriEsito"/>
                     <BoxOsservazioni styleClass="boxElem" fx:id="fxMotoriOsserv"/>
