@@ -5,9 +5,11 @@ package it.costelli.manager.model;
  */
 public enum PressureUnity implements EnumUnity {
 
-	PA("pa"),
 	BAR("bar"),
-	MPA("mpa")
+	MPA("MPa"),
+	PA("Pa"),
+	PSI("psi"),
+	ATM("atm"),
 	;
 
 	private String label;
