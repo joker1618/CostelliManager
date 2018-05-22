@@ -50,4 +50,11 @@
     -fx-wrap-text: true;
 }
 
-.shortTextField .text-field { -fx-max-width: 50; }
+.rumoreCell {
+    -fx-background-color: black, #ffffcc;
+    -fx-background-insets: 0, 0 1 1 0 ;
+    -fx-padding: 5;
+}
+.rumoreCell45 .short-text-field .text-field {
+    -fx-max-width: 40;
+}

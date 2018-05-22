@@ -37,7 +37,7 @@
 
                 <!-- Row 1 -->
                 <HBox styleClass="boxRow">
-                    <VBox styleClass="boxElem"><Label text="PROVA - VERIFICA"/></VBox>
+                    <VBox styleClass="boxElem, lblBold, centered"><Label text="PROVA - VERIFICA"/></VBox>
                     <VBox styleClass="boxElem, lblBold, centered"><Label text="ESITO"/></VBox>
                     <VBox styleClass="boxElem, lblBold, centered"><Label text="OSSERVAZIONI - INTERVENTI"/></VBox>
                 </HBox>
@@ -383,10 +383,63 @@
                 </HBox>
 
                 <!-- Row 19 -->
-                <HBox styleClass="boxRow">
-                    <VBox styleClass="boxElem">
-                        <Label text="RUMORE" styleClass="lblBold"/>
-                    </VBox>
+                <HBox>
+                    <Pane HBox.hgrow="ALWAYS" style="-fx-border-width:0 1 1 0; -fx-border-color: black"/>
+                    <GridPane styleClass="lblFontSize11" style="-fx-pref-height:186">
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="6">
+                            <Label text="RILIEVO RUMORE ESTRATTO DA UNI 7712-77" styleClass="lblBold"/>
+                        </HBox>
+
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <HBox styleClass="rumoreCell,centered" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="4"><Label text="dB RILEVATI"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="1" GridPane.columnIndex="5">
+                            <LabelTextField fx:id="fxRumoreFonometroMod" labelField="FONOMETRO MOD."/>
+                        </HBox>
+
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <HBox styleClass="rumoreCell,centered" GridPane.rowIndex="2" GridPane.columnIndex="1"><Label text="A" styleClass="lblBold"/></HBox>
+                        <HBox styleClass="rumoreCell,centered" GridPane.rowIndex="2" GridPane.columnIndex="2"><Label text="B" styleClass="lblBold"/></HBox>
+                        <HBox styleClass="rumoreCell,centered" GridPane.rowIndex="2" GridPane.columnIndex="3"><Label text="C" styleClass="lblBold"/></HBox>
+                        <HBox styleClass="rumoreCell,centered" GridPane.rowIndex="2" GridPane.columnIndex="4"><Label text="D" styleClass="lblBold"/></HBox>
+
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="3" GridPane.columnIndex="0"><Label text="P min. Bar"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="3" GridPane.columnIndex="1"><LabelTextField fx:id="fxRumoreMinA" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="3" GridPane.columnIndex="2"><LabelTextField fx:id="fxRumoreMinB" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="3" GridPane.columnIndex="3"><LabelTextField fx:id="fxRumoreMinC" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="3" GridPane.columnIndex="4"><LabelTextField fx:id="fxRumoreMinD" styleClass="short-text-field"/></HBox>
+                        
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="4" GridPane.columnIndex="0"><Label text="P max. Bar"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="4" GridPane.columnIndex="1"><LabelTextField fx:id="fxRumoreMaxA" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="4" GridPane.columnIndex="2"><LabelTextField fx:id="fxRumoreMaxB" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="4" GridPane.columnIndex="3"><LabelTextField fx:id="fxRumoreMaxC" styleClass="short-text-field"/></HBox>
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="4" GridPane.columnIndex="4"><LabelTextField fx:id="fxRumoreMaxD" styleClass="short-text-field"/></HBox>
+
+                        <HBox styleClass="rumoreCell" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="5">
+                            <LabelTextField fx:id="fxRumoreFondo" labelField="RUMORE DI FONDO" />
+                        </HBox>
+
+                        <VBox styleClass="rumoreCell" GridPane.rowIndex="2" GridPane.columnIndex="5" GridPane.rowSpan="4">
+                            <Label text="NOTE:" />
+                            <BoxOsservazioni fx:id="fxRumoreNote"/>
+                        </VBox>
+
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="120" maxWidth="120" hgrow="NEVER"/>
+                            <ColumnConstraints minWidth="40" maxWidth="40" hgrow="NEVER" halignment="CENTER"/>
+                            <ColumnConstraints minWidth="40" maxWidth="40" hgrow="NEVER" halignment="CENTER"/>
+                            <ColumnConstraints minWidth="40" maxWidth="40" hgrow="NEVER" halignment="CENTER"/>
+                            <ColumnConstraints minWidth="40" maxWidth="40" hgrow="NEVER" halignment="CENTER"/>
+                            <ColumnConstraints minWidth="320" maxWidth="320" hgrow="NEVER"/>
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="27" maxHeight="27" valignment="CENTER"/>
+                            <RowConstraints minHeight="33" maxHeight="33" valignment="CENTER"/>
+                            <RowConstraints minHeight="27" maxHeight="27" valignment="CENTER"/>
+                            <RowConstraints minHeight="33" maxHeight="33" valignment="CENTER"/>
+                            <RowConstraints minHeight="33" maxHeight="33" valignment="CENTER"/>
+                            <RowConstraints minHeight="33" maxHeight="33" valignment="CENTER"/>
+                        </rowConstraints>
+                    </GridPane>
                 </HBox>
 
                 <!-- Row 20 -->

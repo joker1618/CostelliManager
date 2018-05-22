@@ -178,8 +178,17 @@ public class TestSheetController implements Initializable {
 	@FXML private BoxEsito fxCertificatiEsito;
 	@FXML private BoxOsservazioni fxCertificatiOsserv;
 	// Row 19
-	@FXML private BoxEsito fxRumoreEsito;
-	@FXML private BoxOsservazioni fxRumoreOsserv;
+	@FXML private LabelTextField fxRumoreFonometroMod;
+	@FXML private LabelTextField fxRumoreMinA;
+	@FXML private LabelTextField fxRumoreMinB;
+	@FXML private LabelTextField fxRumoreMinC;
+	@FXML private LabelTextField fxRumoreMinD;
+	@FXML private LabelTextField fxRumoreMaxA;
+	@FXML private LabelTextField fxRumoreMaxB;
+	@FXML private LabelTextField fxRumoreMaxC;
+	@FXML private LabelTextField fxRumoreMaxD;
+	@FXML private LabelTextField fxRumoreFondo;
+	@FXML private BoxOsservazioni fxRumoreNote;
 	// Row 21
 	@FXML private LabelTextField fxLastMontatoDa;
 	@FXML private LabelTextField fxLastCollaudatore;
@@ -408,7 +417,17 @@ public class TestSheetController implements Initializable {
 		addEditableText(CERTIFICATI_OSSERV, fxCertificatiOsserv.getTextArea());
 
 		// Row 19
-		// review missing fields
+		addEditableText(RUMORE_FONOMETRO_MOD, fxRumoreFonometroMod.getTextField());
+		addEditableText(RUMORE_MIN_A, fxRumoreMinA.getTextField());
+		addEditableText(RUMORE_MIN_B, fxRumoreMinB.getTextField());
+		addEditableText(RUMORE_MIN_C, fxRumoreMinC.getTextField());
+		addEditableText(RUMORE_MIN_D, fxRumoreMinD.getTextField());
+		addEditableText(RUMORE_MAX_A, fxRumoreMaxA.getTextField());
+		addEditableText(RUMORE_MAX_B, fxRumoreMaxB.getTextField());
+		addEditableText(RUMORE_MAX_C, fxRumoreMaxC.getTextField());
+		addEditableText(RUMORE_MAX_D, fxRumoreMaxD.getTextField());
+		addEditableText(RUMORE_FONDO, fxRumoreFondo.getTextField());
+		addEditableText(RUMORE_NOTE, fxRumoreNote.getTextArea());
 
 		// Row 21
 		addEditableText(LAST_MONTATO_DA, fxLastMontatoDa.getTextField());
