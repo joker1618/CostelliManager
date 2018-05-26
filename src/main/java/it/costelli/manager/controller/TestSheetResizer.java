@@ -1,7 +1,5 @@
 package it.costelli.manager.controller;
 
-import it.costelli.manager.logger.LogService;
-import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.view.components.BoxOsservazioni;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -21,8 +19,6 @@ import java.util.List;
  * Created by f.barbano on 18/05/2018.
  */
 class TestSheetResizer {
-
-	private static final SimpleLog logger = LogService.getLogger(TestSheetResizer.class);
 
 	private static final double CM_TO_PIXEL_MULTIPLIER = 28.3464567d;
 

@@ -1,18 +1,18 @@
 package it.costelli.manager.pdf;
 
-import com.itextpdf.text.*;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.*;
 import it.costelli.manager.config.Conf;
-import it.costelli.manager.logger.LogService;
-import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
-import it.costelli.manager.util.Converter;
-import it.costelli.manager.util.FileUtils;
-import it.costelli.manager.util.StrUtils;
 import it.costelli.manager.util.StuffUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import xxx.joker.libs.javalibs.utils.JkConverter;
+import xxx.joker.libs.javalibs.utils.JkFiles;
+import xxx.joker.libs.javalibs.utils.JkStrings;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,14 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static it.costelli.manager.util.StrUtils.strf;
+import static xxx.joker.libs.javalibs.utils.JkConsole.displayln;
+import static xxx.joker.libs.javalibs.utils.JkStrings.strf;
 
 /**
  * Created by f.barbano on 17/05/2018.
  */
 public class PdfFacade {
-
-	private static final SimpleLog logger = LogService.getLogger(PdfFacade.class);
 
 	private static Map<FieldType,PdfField> fieldMap;
 
@@ -41,14 +40,14 @@ public class PdfFacade {
 			List<String> lines = Files.readAllLines(Conf.RESOURCE_FIELDS_POS);
 			lines.removeIf(StringUtils::isBlank);
 			for (String line : lines) {
-				String[] split = StrUtils.splitAllFields(line, ";");
-				Integer gnum = Converter.stringToInteger(split[0]);
+				String[] split = JkStrings.splitAllFields(line, ";");
+				Integer gnum = JkConverter.stringToInteger(split[0]);
 				if (gnum != null) {
 					FieldType ft = FieldType.getByGrossoNum(gnum);
 					if (ft != null) {
 						fieldMap.put(ft, new PdfField(split[1], split[2], split[3], split[4], split[5]));
 					} else {
-						logger.warning(strf("File '%s' not found. Unable to read PDF fields positions.", Conf.RESOURCE_FIELDS_POS));
+						displayln("File '%s' not found. Unable to read PDF fields positions.", Conf.RESOURCE_FIELDS_POS);
 					}
 				}
 			}
@@ -71,8 +70,8 @@ public class PdfFacade {
 				e.getValue().getAlignment().getNum()
 			)).collect(Collectors.toList());
 
-		FileUtils.writeFile(Conf.RESOURCE_FIELDS_POS, lines, true);
-		logger.info("Updated field positions");
+		JkFiles.writeFile(Conf.RESOURCE_FIELDS_POS, lines, true);
+		displayln("Updated field positions");
 	}
 
 	public static void fillPDFFields(Path outPath, PDFFont pdfFont, int fontSize, Map<FieldType,String> pdfData) throws IOException, DocumentException {
@@ -99,7 +98,7 @@ public class PdfFacade {
 				}
 			}
 
-			logger.info(strf("Created new PDF test sheet at '%s'", outPath));
+			displayln(strf("Created new PDF test sheet at '%s'", outPath));
 
 		} finally {
 			if(stamper != null)	stamper.close();
@@ -126,7 +125,7 @@ public class PdfFacade {
 			over.rectangle(pdfData.getKey().getX(), pdfData.getKey().getY(), pdfData.getKey().getWidth(), pdfData.getKey().getHeight());
 			over.stroke();
 
-			logger.info(strf("Created new PDF at '%s'", outPath));
+			displayln("Created new PDF at '%s'", outPath);
 
 		} finally {
 			if(stamper != null)	stamper.close();

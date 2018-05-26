@@ -1,14 +1,11 @@
 package it.costelli.manager.controller;
 
 import com.itextpdf.text.DocumentException;
-import it.costelli.manager.logger.LogService;
-import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
-import it.costelli.manager.util.FxUtils;
-import it.costelli.manager.util.StrUtils;
+import it.costelli.manager.util.StuffUtils;
 import it.costelli.manager.view.components.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -29,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import xxx.joker.libs.javalibs.utils.JkStrings;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,8 +43,6 @@ import static it.costelli.manager.model.FieldType.*;
  * Created by f.barbano on 18/05/2018.
  */
 public class TestSheetController implements Initializable {
-
-	private static final SimpleLog logger = LogService.getLogger(TestSheetController.class);
 
 	@FXML private ScrollPane scrollPaneContainer;
 	@FXML private VBox sheetBox;
@@ -453,7 +449,7 @@ public class TestSheetController implements Initializable {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Select output path");
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-		File outFile = fc.showSaveDialog(FxUtils.getWindow(event));
+		File outFile = fc.showSaveDialog(StuffUtils.getWindow(event));
 //		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
 		if(outFile == null) {
 			return;
@@ -485,7 +481,7 @@ public class TestSheetController implements Initializable {
 			Map<FieldType, String> pdfData = new HashMap<>();
 			fieldsMap.forEach((ftype, efield) -> pdfData.put(ftype, efield.toStringField()));
 			PdfFacade.fillPDFFields(outFile.toPath(), resp.get().getKey(), resp.get().getValue(), pdfData);
-			FxUtils.showAlertInfo("Nuovo foglio di collaudo creato", "PDF path: %s", outFile);
+			StuffUtils.showAlertInfo("Nuovo foglio di collaudo creato", "PDF path: %s", outFile);
 		}
 	}
 
@@ -513,8 +509,8 @@ public class TestSheetController implements Initializable {
 			super(node, new SimpleStringProperty(""));
 			getNode().focusedProperty().addListener((obs,old,nez) -> {
 				if(!nez) {
-					String fval = StrUtils.safeTrim(getNode().getText());
-					String pval = StrUtils.safeTrim(getProperty().getValue());
+					String fval = JkStrings.safeTrim(getNode().getText());
+					String pval = JkStrings.safeTrim(getProperty().getValue());
 					getNode().setText(fval);
 					if(!fval.equals(pval)) {
 						getProperty().setValue(fval);

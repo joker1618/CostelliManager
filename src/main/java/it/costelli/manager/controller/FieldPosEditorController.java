@@ -1,15 +1,12 @@
 package it.costelli.manager.controller;
 
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import it.costelli.manager.logger.LogService;
-import it.costelli.manager.logger.SimpleLog;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.PdfField;
 import it.costelli.manager.pdf.PDFAlignment;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
-import it.costelli.manager.util.*;
+import it.costelli.manager.util.StuffUtils;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -27,6 +24,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import xxx.joker.libs.javalibs.utils.JkConverter;
+import xxx.joker.libs.javalibs.utils.JkStreams;
+import xxx.joker.libs.javalibs.utils.JkStrings;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,15 +36,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static it.costelli.manager.util.StrUtils.strf;
-import static it.costelli.manager.util.StuffUtils.display;
+import static xxx.joker.libs.javalibs.utils.JkConsole.displayln;
 
 /**
  * Created by f.barbano on 17/05/2018.
  */
 public class FieldPosEditorController implements Initializable {
-
-	private static final SimpleLog logger = LogService.getLogger(FieldPosEditorController.class);
 
 	@FXML private BorderPane container;
 
@@ -127,22 +124,22 @@ public class FieldPosEditorController implements Initializable {
 				rowNum++;
 			}
 		} catch(IOException ex) {
-			logger.severe(() -> strf("Unable to init grid pane fields positions: %s", ex.getMessage()));
+			displayln("Unable to init grid pane fields positions: %s", ex.getMessage());
 		}
 	}
 	private void initBindings() {
 		// Text fields 'focus released' bindings
 		fxText.focusedProperty().addListener((obs,old,nez) -> {
 			if(!nez) {
-				String s = StrUtils.safeTrim(fxText.getText());
+				String s = JkStrings.safeTrim(fxText.getText());
 				fxText.setText(s);
 			}
 		});
 		Arrays.asList(fxPosX, fxPosY, fxPosEndX, fxPosEndY).forEach(
 			tf -> tf.focusedProperty().addListener((obs,old,nez) -> {
 				if(!nez) {
-					String s = StrUtils.safeTrim(tf.getText());
-					Double dnum = Converter.stringToDouble(s);
+					String s = JkStrings.safeTrim(tf.getText());
+					Double dnum = JkConverter.stringToDouble(s);
 					tf.setText(dnum == null ? "" : StuffUtils.viewDouble(dnum));
 				}
 			})
@@ -164,20 +161,20 @@ public class FieldPosEditorController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select output path");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-		File outFile = fileChooser.showSaveDialog(FxUtils.getWindow(event));
+		File outFile = fileChooser.showSaveDialog(StuffUtils.getWindow(event));
 		if(outFile != null) {
 			PDFFont fontType = fxComboFontType.getSelectionModel().getSelectedItem();
 			Integer fontSize = fxComboFontSize.getSelectionModel().getSelectedItem();
 			PDFAlignment align = fxComboAlign.getSelectionModel().getSelectedItem();
 			PdfField pdfField = new PdfField(fxPosX.getText(), fxPosY.getText(), fxPosEndX.getText(), fxPosEndY.getText(), align);
 			PdfFacade.writOnPDF(outFile.toPath(), fontType, fontSize, Pair.of(pdfField, fxText.getText()));
-			FxUtils.showAlertInfo("Nuovo PDF creato", "Path: %s", outFile.toPath().toAbsolutePath());
+			StuffUtils.showAlertInfo("Nuovo PDF creato", "Path: %s", outFile.toPath().toAbsolutePath());
 		}
 	}
 
 	@FXML private void actionSaveAllFieldPos(ActionEvent event) throws IOException {
-		if(StreamUtils.filter(posRowList, PosRow::isPosChanged).isEmpty()) {
-			FxUtils.showAlertInfo("Nessuna modifica da salvare", "");
+		if(JkStreams.filter(posRowList, PosRow::isPosChanged).isEmpty()) {
+			StuffUtils.showAlertInfo("Nessuna modifica da salvare", "");
 			return;
 		}
 
@@ -188,7 +185,7 @@ public class FieldPosEditorController implements Initializable {
 		});
 
 		PdfFacade.updatePositions(fmap);
-		FxUtils.showAlertInfo("Posizioni salvate", "");
+		StuffUtils.showAlertInfo("Posizioni salvate", "");
 	}
 
 
@@ -248,10 +245,10 @@ public class FieldPosEditorController implements Initializable {
 				fxPosX.textProperty(), fxPosY.textProperty(), fxPosEndX.textProperty(), fxPosEndY.textProperty()
 			));
 			btnUpdate.setOnAction(e -> {
-				pair.getValue().setX(Converter.stringToFloat(fxPosX.getText()));
-				pair.getValue().setY(Converter.stringToFloat(fxPosY.getText()));
-				pair.getValue().setEndX(Converter.stringToFloat(fxPosEndX.getText()));
-				pair.getValue().setEndY(Converter.stringToFloat(fxPosEndY.getText()));
+				pair.getValue().setX(JkConverter.stringToFloat(fxPosX.getText()));
+				pair.getValue().setY(JkConverter.stringToFloat(fxPosY.getText()));
+				pair.getValue().setEndX(JkConverter.stringToFloat(fxPosEndX.getText()));
+				pair.getValue().setEndY(JkConverter.stringToFloat(fxPosEndY.getText()));
 			});
 		}
 

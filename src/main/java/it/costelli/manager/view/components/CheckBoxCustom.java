@@ -11,7 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
 
-import static it.costelli.manager.util.StrUtils.strf;
+import static xxx.joker.libs.javalibs.utils.JkStrings.strf;
+
 
 /**
  * Created by f.barbano on 12/05/2018.
