@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 public class Conf {
 
 	// review 
-	public static final Path BASE_FOLDER = Paths.get("resources/");
 //	public static final Path BASE_FOLDER = Paths.get("src/main/resources");
+	public static final Path BASE_FOLDER = Paths.get("resources/");
 
 	public static final Path RESOURCE_FIELDS_POS = BASE_FOLDER.resolve("pdf/fieldsPositions.csv");
 	public static final Path RESOURCE_TEMPLATE_TEST_SHEET = BASE_FOLDER.resolve("pdf/TestSheetTemplate.pdf");
