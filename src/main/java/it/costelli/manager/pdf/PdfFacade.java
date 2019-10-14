@@ -4,7 +4,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.*;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import it.costelli.manager.config.Conf;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.Language;
