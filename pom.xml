@@ -26,12 +26,17 @@
         </dependency>
 
         <!-- ScenicView: review to delete -->
-        <!--<dependency>-->
-            <!--<groupId>org</groupId>-->
-            <!--<artifactId>scenicview</artifactId>-->
-            <!--<version>1.0</version>-->
-        <!--</dependency>-->
-        
+        <dependency>
+            <groupId>3rdParty.org</groupId>
+            <artifactId>scenicview</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>xxx.joker.libs</groupId>
+            <artifactId>java-core</artifactId>
+            <version>2.0</version>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
@@ -52,6 +57,33 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- create JAR with dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass></mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

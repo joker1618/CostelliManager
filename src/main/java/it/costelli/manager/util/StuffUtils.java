@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Optional;
 
-import static xxx.joker.libs.javalibs.utils.JkStrings.strf;
+import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 /**
  * Created by f.barbano on 13/05/2018.

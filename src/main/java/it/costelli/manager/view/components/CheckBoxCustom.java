@@ -11,7 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
 
-import static xxx.joker.libs.javalibs.utils.JkStrings.strf;
+import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 
 /**
@@ -41,6 +41,12 @@ public class CheckBoxCustom extends BorderPane {
 		this.checkBox.textProperty().bind(labelCheckBox);
 		this.textField.disableProperty().bind(Bindings.createBooleanBinding(() -> !checkBox.isSelected(), checkBox.selectedProperty()));
 		leftBox.setAlignment(Pos.CENTER);
+
+		this.checkBox.selectedProperty().addListener((obs,o,n) -> {
+			if(!n) {
+				this.textField.setText(null);
+			}
+		});
 	}
 
 	public boolean isSelected() {

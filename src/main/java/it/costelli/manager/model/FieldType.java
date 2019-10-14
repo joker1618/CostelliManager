@@ -192,7 +192,7 @@ public enum FieldType {
 	RUMORE_MAX_C(145),
 	RUMORE_MAX_D(147),
 	RUMORE_FONDO(148),
-	RUMORE_NOTE(155),
+	RUMORE_NOTE(155, true),
 
 	// Row 21
 	LAST_MONTATO_DA(149),

@@ -3,6 +3,7 @@ package it.costelli.manager.controller;
 import com.itextpdf.text.DocumentException;
 import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.FieldType;
+import it.costelli.manager.model.Language;
 import it.costelli.manager.pdf.PDFFont;
 import it.costelli.manager.pdf.PdfFacade;
 import it.costelli.manager.util.StuffUtils;
@@ -20,13 +21,16 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import xxx.joker.libs.javalibs.utils.JkStrings;
+import xxx.joker.libs.core.utils.JkStrings;
 
 import java.io.File;
 import java.io.IOException;
@@ -191,6 +195,9 @@ public class TestSheetController implements Initializable {
 	@FXML private LabelTextField fxLastResponsabile;
 	@FXML private DatePickerCustom fxLastData;
 
+	@FXML private HBox hboxLanguage;
+
+	private SimpleObjectProperty<Language> language = new SimpleObjectProperty<>();
 
 	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
 
@@ -207,6 +214,28 @@ public class TestSheetController implements Initializable {
 		scrollPaneContainer.setMaxWidth(sheetWidth + 20.0);
 
 		manageFieldBindings();
+
+		fillHBoxLanguage();
+	}
+
+	private void fillHBoxLanguage() {
+		RadioButton radioIta = createLanguageRadioButton("flagITA.png");
+		RadioButton radioEng = createLanguageRadioButton("flagUK.png");
+		ToggleGroup tg = new ToggleGroup();
+		tg.selectedToggleProperty().addListener((obs,o,n) -> language.set(n == radioIta ? Language.ITA : Language.ENG));
+		tg.getToggles().setAll(radioIta, radioEng);
+		radioIta.setSelected(true);
+		hboxLanguage.getChildren().setAll(radioIta, radioEng);
+	}
+	private RadioButton createLanguageRadioButton(String imgFileName) {
+		RadioButton radio = new RadioButton();
+		Image img = new Image(getClass().getResource("/images/" + imgFileName).toExternalForm());
+		ImageView iv = new ImageView(img);
+		iv.setPreserveRatio(true);
+		iv.setFitWidth(90);
+		iv.setFitWidth(60);
+		radio.setGraphic(iv);
+		return radio;
 	}
 
 	private void manageSpecificBindings() {
@@ -434,8 +463,11 @@ public class TestSheetController implements Initializable {
 	private void addEditableText(FieldType fieldType, TextInputControl textInput) {
 		fieldsMap.put(fieldType, new EditableText(textInput));
 	}
-	private void addEditableCheckBox(FieldType fieldType, CheckBox checkBox, Node... nodesToDisable) {
-		fieldsMap.put(fieldType, new EditableCheckBox(checkBox, nodesToDisable));
+	private void addEditableCheckBox(FieldType fieldType, CheckBox checkBox) {
+		fieldsMap.put(fieldType, new EditableCheckBox(checkBox));
+	}
+	private void addEditableCheckBox(FieldType fieldType, CheckBox checkBox, TextInputControl txtControl) {
+		fieldsMap.put(fieldType, new EditableCheckBox(checkBox, txtControl));
 	}
 	private void addEditableComboUnity(FieldType fieldType, ComboBox<EnumUnity> comboUnity) {
 		fieldsMap.put(fieldType, new EditableComboUnity(comboUnity));
@@ -447,10 +479,10 @@ public class TestSheetController implements Initializable {
 	@FXML
 	private void actionCreatePDF(ActionEvent event) throws IOException, DocumentException {
 		FileChooser fc = new FileChooser();
+		fc.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
 		fc.setTitle("Select output path");
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
 		File outFile = fc.showSaveDialog(StuffUtils.getWindow(event));
-//		File outFile = new File("C:\\Users\\f.barbano\\Desktop\\ZZZZZ.pdf");//review to delete
 		if(outFile == null) {
 			return;
 		}
@@ -480,7 +512,7 @@ public class TestSheetController implements Initializable {
 		if (resp.isPresent()) {
 			Map<FieldType, String> pdfData = new HashMap<>();
 			fieldsMap.forEach((ftype, efield) -> pdfData.put(ftype, efield.toStringField()));
-			PdfFacade.fillPDFFields(outFile.toPath(), resp.get().getKey(), resp.get().getValue(), pdfData);
+			PdfFacade.fillPDFFields(language.get(), outFile.toPath(), resp.get().getKey(), resp.get().getValue(), pdfData);
 			StuffUtils.showAlertInfo("Nuovo foglio di collaudo creato", "PDF path: %s", outFile);
 		}
 	}
@@ -517,6 +549,9 @@ public class TestSheetController implements Initializable {
 					}
 				}
 			});
+			getNode().disableProperty().addListener((obs,o,n) -> {
+				if(n)	getProperty().setValue(null);
+			});
 		}
 
 		@Override
@@ -525,10 +560,17 @@ public class TestSheetController implements Initializable {
 		}
 	}
 	private class EditableCheckBox extends EditableField<CheckBox,SimpleBooleanProperty> {
-		EditableCheckBox(CheckBox node, Node... disableNodes) {
+		EditableCheckBox(CheckBox node) {
 			super(node, new SimpleBooleanProperty(false));
 			getProperty().bind(getNode().selectedProperty());
-			Arrays.asList(disableNodes).forEach(n -> n.disableProperty().bind(Bindings.createBooleanBinding(() -> !getProperty().getValue(), getProperty())));
+		}
+
+		EditableCheckBox(CheckBox node, TextInputControl txtControl) {
+			this(node);
+			txtControl.disableProperty().bind(Bindings.createBooleanBinding(() -> !getProperty().getValue(), getProperty()));
+			getProperty().addListener((obs,o,n) -> {
+				if(!n)	txtControl.setText(null);
+			});
 		}
 
 		@Override

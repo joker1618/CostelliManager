@@ -4,15 +4,17 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.*;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import it.costelli.manager.config.Conf;
 import it.costelli.manager.model.FieldType;
+import it.costelli.manager.model.Language;
 import it.costelli.manager.model.PdfField;
 import it.costelli.manager.util.StuffUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import xxx.joker.libs.javalibs.utils.JkConverter;
-import xxx.joker.libs.javalibs.utils.JkFiles;
-import xxx.joker.libs.javalibs.utils.JkStrings;
+import xxx.joker.libs.core.files.JkFiles;
+import xxx.joker.libs.core.utils.JkConvert;
+import xxx.joker.libs.core.utils.JkStrings;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static xxx.joker.libs.javalibs.utils.JkConsole.displayln;
-import static xxx.joker.libs.javalibs.utils.JkStrings.strf;
+import static xxx.joker.libs.core.utils.JkConsole.display;
+import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 /**
  * Created by f.barbano on 17/05/2018.
@@ -37,17 +39,17 @@ public class PdfFacade {
 	public static PdfField getFieldPosition(FieldType fieldType) throws IOException {
 		if(fieldMap == null) {
 			fieldMap = new HashMap<>();
-			List<String> lines = Files.readAllLines(Conf.RESOURCE_FIELDS_POS);
+			List<String> lines = Files.readAllLines(Conf.FIELDS_POSITIONS);
 			lines.removeIf(StringUtils::isBlank);
 			for (String line : lines) {
-				String[] split = JkStrings.splitAllFields(line, ";");
-				Integer gnum = JkConverter.stringToInteger(split[0]);
+				String[] split = JkStrings.splitArr(line, ";");
+				Integer gnum = JkConvert.toInt(split[0]);
 				if (gnum != null) {
 					FieldType ft = FieldType.getByGrossoNum(gnum);
 					if (ft != null) {
 						fieldMap.put(ft, new PdfField(split[1], split[2], split[3], split[4], split[5]));
 					} else {
-						displayln("File '%s' not found. Unable to read PDF fields positions.", Conf.RESOURCE_FIELDS_POS);
+						display("File '%s' not found. Unable to read PDF fields positions.", Conf.FIELDS_POSITIONS);
 					}
 				}
 			}
@@ -56,7 +58,7 @@ public class PdfFacade {
 		return fieldMap.get(fieldType);
 	}
 
-	public static void updatePositions(Map<FieldType,PdfField> newPos) throws IOException {
+	public static void updatePositions(Map<FieldType,PdfField> newPos) {
 		fieldMap = newPos;
 
 		List<String> lines = fieldMap.entrySet().stream()
@@ -70,16 +72,17 @@ public class PdfFacade {
 				e.getValue().getAlignment().getNum()
 			)).collect(Collectors.toList());
 
-		JkFiles.writeFile(Conf.RESOURCE_FIELDS_POS, lines, true);
-		displayln("Updated field positions");
+		JkFiles.writeFile(Conf.FIELDS_POSITIONS, lines, true);
+		display("Updated field positions");
 	}
 
-	public static void fillPDFFields(Path outPath, PDFFont pdfFont, int fontSize, Map<FieldType,String> pdfData) throws IOException, DocumentException {
+	public static void fillPDFFields(Language lang, Path outPath, PDFFont pdfFont, int fontSize, Map<FieldType,String> pdfData) throws IOException, DocumentException {
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 
 		try {
-			reader = new PdfReader(Conf.RESOURCE_TEMPLATE_TEST_SHEET.toString());
+			Path templatePath = lang == Language.ITA ? Conf.TEMPLATE_CERTIFICATE_ITA : Conf.TEMPLATE_CERTIFICATE_ENG;
+			reader = new PdfReader(templatePath.toString());
 			stamper = new PdfStamper(reader, new FileOutputStream(outPath.toFile()));
 
 			BaseFont bf = BaseFont.createFont(pdfFont.label(), BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
@@ -98,7 +101,7 @@ public class PdfFacade {
 				}
 			}
 
-			displayln(strf("Created new PDF test sheet at '%s'", outPath));
+			display(strf("Created new PDF test sheet at '%s'", outPath));
 
 		} finally {
 			if(stamper != null)	stamper.close();
@@ -114,7 +117,7 @@ public class PdfFacade {
 		PdfStamper stamper = null;
 
 		try {
-			reader = new PdfReader(Conf.RESOURCE_TEMPLATE_TEST_SHEET.toString());
+			reader = new PdfReader(Conf.TEMPLATE_CERTIFICATE_ITA.toString());
 			stamper = new PdfStamper(reader, new FileOutputStream(outPath.toFile()));
 
 			BaseFont bf = BaseFont.createFont(pdfFont.label(), BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
@@ -125,7 +128,7 @@ public class PdfFacade {
 			over.rectangle(pdfData.getKey().getX(), pdfData.getKey().getY(), pdfData.getKey().getWidth(), pdfData.getKey().getHeight());
 			over.stroke();
 
-			displayln("Created new PDF at '%s'", outPath);
+			display("Created new PDF at '%s'", outPath);
 
 		} finally {
 			if(stamper != null)	stamper.close();

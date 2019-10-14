@@ -40,7 +40,10 @@
 .lblUnderline .label  { -fx-underline: true; }
 .label.lblUnderline  { -fx-underline: true; }
 
-.rightBox { -fx-padding: 50; }
+.rightBox {
+    -fx-padding: 50;
+    -fx-spacing: 30;
+}
 .rightBox .button {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -49,7 +52,9 @@
     -fx-pref-height: 100;
     -fx-wrap-text: true;
 }
-
+#hboxLanguage {
+    -fx-spacing: 20;
+}
 .rumoreCell {
     -fx-background-color: black, #ffffcc;
     -fx-background-insets: 0, 0 1 1 0 ;

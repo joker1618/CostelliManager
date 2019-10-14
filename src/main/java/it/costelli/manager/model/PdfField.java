@@ -3,7 +3,7 @@ package it.costelli.manager.model;
 import it.costelli.manager.pdf.PDFAlignment;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import xxx.joker.libs.javalibs.utils.JkConverter;
+import xxx.joker.libs.core.utils.JkConvert;
 
 /**
  * Created by f.barbano on 17/05/2018.
@@ -17,13 +17,13 @@ public class PdfField {
 	private SimpleObjectProperty<PDFAlignment> alignment;
 
 	public PdfField(String x, String y, String endX, String endY, String alignment) {
-		this(x, y, endX, endY, PDFAlignment.getByNum(JkConverter.stringToInteger(alignment)));
+		this(x, y, endX, endY, PDFAlignment.getByNum(JkConvert.toInt(alignment)));
 	}
 	public PdfField(String x, String y, String endX, String endY, PDFAlignment alignment) {
-		this.x = new SimpleFloatProperty(JkConverter.stringToFloat(x));
-		this.y = new SimpleFloatProperty(JkConverter.stringToFloat(y));
-		this.endX = new SimpleFloatProperty(JkConverter.stringToFloat(endX));
-		this.endY = new SimpleFloatProperty(JkConverter.stringToFloat(endY));
+		this.x = new SimpleFloatProperty(JkConvert.toFloat(x));
+		this.y = new SimpleFloatProperty(JkConvert.toFloat(y));
+		this.endX = new SimpleFloatProperty(JkConvert.toFloat(endX));
+		this.endY = new SimpleFloatProperty(JkConvert.toFloat(endY));
 		this.alignment = new SimpleObjectProperty<>(alignment);
 	}
 	private PdfField(double x, double y, double endX, double endY, PDFAlignment alignment) {

@@ -481,6 +481,7 @@
     <right>
         <VBox styleClass="rightBox">
             <Button text="CREA FOGLIO DI COLLAUDO" onAction="#actionCreatePDF"/>
+            <HBox fx:id="hboxLanguage" />
         </VBox>
     </right>
 </BorderPane>

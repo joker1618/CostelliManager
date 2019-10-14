@@ -41,7 +41,7 @@
             <HBox styleClass="hbox">
                 <HBox spacing="5">
                     <Label text="x:"/>
-                    <TextField fx:id="fxPosX" styleClass="numField"/>
+                    <TextField fx:id="fxPosX" styleClass="numField" />
                 </HBox>
                 <HBox spacing="5">
                     <Label text="y:"/>

@@ -24,9 +24,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import xxx.joker.libs.javalibs.utils.JkConverter;
-import xxx.joker.libs.javalibs.utils.JkStreams;
-import xxx.joker.libs.javalibs.utils.JkStrings;
+import xxx.joker.libs.core.lambdas.JkStreams;
+import xxx.joker.libs.core.utils.JkConvert;
+import xxx.joker.libs.core.utils.JkStrings;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static xxx.joker.libs.javalibs.utils.JkConsole.displayln;
+import static xxx.joker.libs.core.utils.JkConsole.display;
+
 
 /**
  * Created by f.barbano on 17/05/2018.
@@ -124,7 +125,7 @@ public class FieldPosEditorController implements Initializable {
 				rowNum++;
 			}
 		} catch(IOException ex) {
-			displayln("Unable to init grid pane fields positions: %s", ex.getMessage());
+			display("Unable to init grid pane fields positions: %s", ex.getMessage());
 		}
 	}
 	private void initBindings() {
@@ -139,7 +140,7 @@ public class FieldPosEditorController implements Initializable {
 			tf -> tf.focusedProperty().addListener((obs,old,nez) -> {
 				if(!nez) {
 					String s = JkStrings.safeTrim(tf.getText());
-					Double dnum = JkConverter.stringToDouble(s);
+					Double dnum = JkConvert.toDouble(s);
 					tf.setText(dnum == null ? "" : StuffUtils.viewDouble(dnum));
 				}
 			})
@@ -245,10 +246,10 @@ public class FieldPosEditorController implements Initializable {
 				fxPosX.textProperty(), fxPosY.textProperty(), fxPosEndX.textProperty(), fxPosEndY.textProperty()
 			));
 			btnUpdate.setOnAction(e -> {
-				pair.getValue().setX(JkConverter.stringToFloat(fxPosX.getText()));
-				pair.getValue().setY(JkConverter.stringToFloat(fxPosY.getText()));
-				pair.getValue().setEndX(JkConverter.stringToFloat(fxPosEndX.getText()));
-				pair.getValue().setEndY(JkConverter.stringToFloat(fxPosEndY.getText()));
+				pair.getValue().setX(JkConvert.toFloat(fxPosX.getText()));
+				pair.getValue().setY(JkConvert.toFloat(fxPosY.getText()));
+				pair.getValue().setEndX(JkConvert.toFloat(fxPosEndX.getText()));
+				pair.getValue().setEndY(JkConvert.toFloat(fxPosEndY.getText()));
 			});
 		}
 
