@@ -28,7 +28,7 @@ public class GUILauncher extends Application {
 	private Pane testSheetPane, editorPosPane;
 
 	public static void main(String[] args) throws IOException {
-		scenicView = args.length > 0 && "-scenicView".equals(args[0]);
+		scenicView = args.length > 0 && "-sv".equals(args[0]);
 //		scenicView = true;
 		launch(args);
 	}

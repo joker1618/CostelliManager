@@ -51,4 +51,8 @@ public class StuffUtils {
 		nf.setMaximumFractionDigits(2);
 		return nf;
 	}
+
+	public static String safeTrim(String source) {
+		return source == null ? "" : source.trim();
+	}
 }

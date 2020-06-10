@@ -1,6 +1,7 @@
 package it.costelli.manager.controller;
 
 import com.itextpdf.text.DocumentException;
+import it.costelli.manager.config.Conf;
 import it.costelli.manager.model.EnumUnity;
 import it.costelli.manager.model.FieldType;
 import it.costelli.manager.model.Language;
@@ -30,6 +31,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import xxx.joker.libs.core.datetime.JkDateTime;
+import xxx.joker.libs.core.datetime.JkDates;
+import xxx.joker.libs.core.files.JkFiles;
+import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkStrings;
 
 import java.io.File;
@@ -199,7 +204,7 @@ public class TestSheetController implements Initializable {
 
 	private SimpleObjectProperty<Language> language = new SimpleObjectProperty<>();
 
-	private final Map<FieldType,EditableField> fieldsMap = new HashMap<>();
+	private final Map<FieldType,EditableField<?,?>> fieldsMap = new HashMap<>();
 
 
 	@Override
@@ -214,28 +219,6 @@ public class TestSheetController implements Initializable {
 		scrollPaneContainer.setMaxWidth(sheetWidth + 20.0);
 
 		manageFieldBindings();
-
-		fillHBoxLanguage();
-	}
-
-	private void fillHBoxLanguage() {
-		RadioButton radioIta = createLanguageRadioButton("flagITA.png");
-		RadioButton radioEng = createLanguageRadioButton("flagUK.png");
-		ToggleGroup tg = new ToggleGroup();
-		tg.selectedToggleProperty().addListener((obs,o,n) -> language.set(n == radioIta ? Language.ITA : Language.ENG));
-		tg.getToggles().setAll(radioIta, radioEng);
-		radioIta.setSelected(true);
-		hboxLanguage.getChildren().setAll(radioIta, radioEng);
-	}
-	private RadioButton createLanguageRadioButton(String imgFileName) {
-		RadioButton radio = new RadioButton();
-		Image img = new Image(getClass().getResource("/images/" + imgFileName).toExternalForm());
-		ImageView iv = new ImageView(img);
-		iv.setPreserveRatio(true);
-		iv.setFitWidth(90);
-		iv.setFitWidth(60);
-		radio.setGraphic(iv);
-		return radio;
 	}
 
 	private void manageSpecificBindings() {
@@ -488,6 +471,8 @@ public class TestSheetController implements Initializable {
 		}
 
 		GridPane gridPane = new GridPane();
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
 
 		// Combo font type
 		ComboBox<PDFFont> comboFont = new ComboBox<>(FXCollections.observableArrayList(PDFFont.values()));
@@ -501,6 +486,10 @@ public class TestSheetController implements Initializable {
 		comboSize.getSelectionModel().select((Integer)10);
 		gridPane.add(new Label("Font size:"), 0, 1);
 		gridPane.add(comboSize, 1, 1);
+
+		// Radio language
+		gridPane.add(new Label("Language:"), 0, 2);
+		gridPane.add(createHBoxLanguageChoice(), 1, 2);
 
 		// Create dialog
 		Dialog<Pair<PDFFont,Integer>> dlg = new Dialog<>();
@@ -516,8 +505,70 @@ public class TestSheetController implements Initializable {
 			StuffUtils.showAlertInfo("Nuovo foglio di collaudo creato", "PDF path: %s", outFile);
 		}
 	}
+	private HBox createHBoxLanguageChoice() {
+		RadioButton lanIta = createLanguageRadioButton(Language.ITA);
+		RadioButton lanUK = createLanguageRadioButton(Language.ENG);
+		ToggleGroup tg = new ToggleGroup();
+		tg.selectedToggleProperty().addListener((obs,o,n) -> language.set(n == lanIta ? Language.ITA : Language.ENG));
+		tg.getToggles().addAll(lanIta, lanUK);
+		lanIta.setSelected(true);
+		HBox boxLan = new HBox(lanIta, lanUK);
+		boxLan.setSpacing(5);
+		return boxLan;
+	}
+	private RadioButton createLanguageRadioButton(Language language) {
+		RadioButton radio = new RadioButton();
+		String imagePath = language == Language.ITA ? Conf.PATH_FLAG_ITA : Conf.PATH_FLAG_UK;
+		Image img = new Image(getClass().getResource(imagePath).toExternalForm());
+		ImageView iv = new ImageView(img);
+		iv.setPreserveRatio(false);
+		iv.setFitWidth(36);
+		iv.setFitHeight(24);
+		radio.setGraphic(iv);
+		return radio;
+	}
 
-	public abstract class EditableField<N extends Node, P extends Property> {
+	@FXML
+	private void actionSaveValues(ActionEvent event) {
+		FileChooser fc = new FileChooser();
+		fc.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
+		fc.setTitle("Select output path");
+		fc.getExtensionFilters().add(Conf.SAVE_FILE_EXT_FILTER);
+		File outFile = fc.showSaveDialog(StuffUtils.getWindow(event));
+		if(outFile == null) {
+			return;
+		}
+
+		List<String> csvLines = fieldsMap.entrySet().stream()
+				.map(e -> e.getKey().name() + Conf.CSV_FIELD_SEP + e.getValue().toStringField())
+				.collect(Collectors.toList());
+		JkFiles.writeFile(outFile.toPath(), csvLines);
+
+		StuffUtils.showAlertInfo("Salvato foglio di collaudo", "File path: %s", outFile);
+	}
+
+	@FXML
+	private void actionLoadValues(ActionEvent event) {
+		FileChooser fc = new FileChooser();
+		fc.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
+		fc.setTitle("Select output path");
+		fc.getExtensionFilters().add(Conf.SAVE_FILE_EXT_FILTER);
+		File sourceFile = fc.showOpenDialog(StuffUtils.getWindow(event));
+		if(sourceFile == null) {
+			return;
+		}
+
+		List<String> lines = JkFiles.readLines(sourceFile.toPath());
+		for (String line : lines) {
+			String[] arr = JkStrings.splitArr(line, Conf.CSV_FIELD_SEP);
+			if(arr.length > 1) {
+				FieldType fieldType = valueOf(arr[0]);
+				fieldsMap.get(fieldType).setFieldValue(arr[1]);
+			}
+		}
+	}
+
+	public static abstract class EditableField<N extends Node, P extends Property<?>> {
 		private N node;
 		private P property;
 
@@ -535,8 +586,9 @@ public class TestSheetController implements Initializable {
 		}
 
 		public abstract String toStringField();
+		public abstract void setFieldValue(String stringValue);
 	}
-	private class EditableText extends EditableField<TextInputControl,SimpleStringProperty> {
+	private static class EditableText extends EditableField<TextInputControl,SimpleStringProperty> {
 		EditableText(TextInputControl node) {
 			super(node, new SimpleStringProperty(""));
 			getNode().focusedProperty().addListener((obs,old,nez) -> {
@@ -556,10 +608,20 @@ public class TestSheetController implements Initializable {
 
 		@Override
 		public String toStringField() {
-			return getProperty().getValue();
+			return StuffUtils.safeTrim(getProperty().getValue());
+		}
+
+		@Override
+		public void setFieldValue(String stringValue) {
+			String val = StuffUtils.safeTrim(stringValue);
+			getNode().setText(val);
+			getProperty().setValue(val);
 		}
 	}
-	private class EditableCheckBox extends EditableField<CheckBox,SimpleBooleanProperty> {
+	private static class EditableCheckBox extends EditableField<CheckBox,SimpleBooleanProperty> {
+		private final String STR_TRUE = "X";
+		private final String STR_FALSE = "";
+
 		EditableCheckBox(CheckBox node) {
 			super(node, new SimpleBooleanProperty(false));
 			getProperty().bind(getNode().selectedProperty());
@@ -575,10 +637,15 @@ public class TestSheetController implements Initializable {
 
 		@Override
 		public String toStringField() {
-			return getProperty().getValue() ? "X" : "";
+			return getProperty().getValue() ? STR_TRUE : STR_FALSE;
+		}
+
+		@Override
+		public void setFieldValue(String stringValue) {
+			getNode().setSelected(STR_TRUE.equalsIgnoreCase(stringValue));
 		}
 	}
-	private class EditableComboUnity extends EditableField<ComboBox<EnumUnity>,SimpleObjectProperty<EnumUnity>> {
+	private static class EditableComboUnity extends EditableField<ComboBox<EnumUnity>,SimpleObjectProperty<EnumUnity>> {
 		EditableComboUnity(ComboBox<EnumUnity> node) {
 			super(node, new SimpleObjectProperty<>());
 			getProperty().bind(getNode().getSelectionModel().selectedItemProperty());
@@ -588,8 +655,16 @@ public class TestSheetController implements Initializable {
 		public String toStringField() {
 			return getProperty().getValue().getLabel();
 		}
+
+		@Override
+		public void setFieldValue(String stringValue) {
+			EnumUnity enumUnity = EnumUnity.fromLabel(stringValue);
+			getNode().getSelectionModel().select(enumUnity);
+		}
 	}
-	private class EditableDatePicker extends EditableField<DatePicker,SimpleObjectProperty<LocalDate>> {
+	private static class EditableDatePicker extends EditableField<DatePicker,SimpleObjectProperty<LocalDate>> {
+		private final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
 		EditableDatePicker(DatePicker node) {
 			super(node, new SimpleObjectProperty<>());
 			getNode().valueProperty().addListener((obs,old,nez) -> getProperty().setValue(nez));
@@ -598,7 +673,12 @@ public class TestSheetController implements Initializable {
 
 		@Override
 		public String toStringField() {
-			return getProperty().getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			return getProperty().getValue().format(DTF);
+		}
+
+		@Override
+		public void setFieldValue(String stringValue) {
+			getNode().setValue(LocalDate.parse(stringValue, DTF));
 		}
 	}
 }

@@ -20,4 +20,13 @@ public enum TimeUnity implements EnumUnity {
 	public String getLabel() {
 		return label;
 	}
+
+	public static EnumUnity fromLabel(String label) {
+		for (TimeUnity value : values()) {
+			if(value.label.equalsIgnoreCase(label)) {
+				return value;
+			}
+		}
+		return null;
+	}
 }

@@ -23,5 +23,14 @@ public enum PressureUnity implements EnumUnity {
 		return label;
 	}
 
+	public static EnumUnity fromLabel(String label) {
+		for (PressureUnity value : values()) {
+			if(value.label.equalsIgnoreCase(label)) {
+				return value;
+			}
+		}
+		return null;
+	}
+
 
 }
