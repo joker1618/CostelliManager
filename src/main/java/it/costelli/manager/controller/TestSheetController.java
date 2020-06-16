@@ -540,7 +540,7 @@ public class TestSheetController implements Initializable {
 		}
 
 		List<String> csvLines = fieldsMap.entrySet().stream()
-				.map(e -> e.getKey().name() + Conf.CSV_FIELD_SEP + e.getValue().toStringField())
+				.map(e -> e.getKey().name() + Conf.CSV_FIELD_SEP + escapeSpecialChars(e.getValue().toStringField()))
 				.collect(Collectors.toList());
 		JkFiles.writeFile(outFile.toPath(), csvLines);
 
@@ -563,9 +563,16 @@ public class TestSheetController implements Initializable {
 			String[] arr = JkStrings.splitArr(line, Conf.CSV_FIELD_SEP);
 			if(arr.length > 1) {
 				FieldType fieldType = valueOf(arr[0]);
-				fieldsMap.get(fieldType).setFieldValue(arr[1]);
+				fieldsMap.get(fieldType).setFieldValue(unescapeSpecialChars(arr[1]));
 			}
 		}
+	}
+
+	private String escapeSpecialChars(String str) {
+		return str.replaceAll("\t", "#TAB#").replaceAll("\n", "#LF#");
+	}
+	private String unescapeSpecialChars(String str) {
+		return str.replaceAll("#TAB#", "\t").replaceAll("#LF#", "\n");
 	}
 
 	public static abstract class EditableField<N extends Node, P extends Property<?>> {
